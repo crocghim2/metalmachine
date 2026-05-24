@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+\<!DOCTYPE html>
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
@@ -14,7 +14,7 @@
             --dark: #111215;          /* Gri-negru metalizat închis */
             --silver-bright: #f0f2f5;  /* Argintiu pur lucios */
             --silver-metal: #adb5bd;  /* Argintiu finisat */
-            --card-bg: #1a1c20;       
+            --card-bg: #1a1c20;        
             --text-muted: #868e96;    
             --sidebar-width: 260px;   /* Lățimea meniului din stânga */
         }
@@ -106,6 +106,8 @@
         .form-box { max-width: 650px; margin: 0 auto; background: var(--card-bg); padding: 40px; border-radius: 6px; border: 1px solid #2b2e36; }
         .form-box h2 { text-align: center; margin-bottom: 15px; color: var(--primary); }
         .form-box p { text-align: center; color: var(--silver-metal); margin-bottom: 30px; }
+        .contact-info { text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #333; }
+        .contact-info a { color: var(--primary); text-decoration: none; font-size: 1.2rem; font-weight: bold; }
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--silver-metal); }
         .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px; background: #121316; border: 1px solid #3a3f4a; color: #fff; border-radius: 4px; font-size: 1rem; }
@@ -150,6 +152,7 @@
             <li><a onclick="arataRubrica('categorii')" id="lnk-categorii"><i class="fa-solid fa-layer-group"></i> Categorii</a></li>
             <li><a onclick="arataRubrica('galerie')" id="lnk-galerie"><i class="fa-solid fa-images"></i> Galerie</a></li>
             <li><a onclick="arataRubrica('comanda')" id="lnk-comanda"><i class="fa-solid fa-file-invoice-dollar"></i> Comandă</a></li>
+            <li><a href="tel:0758690256"><i class="fa-solid fa-phone"></i> 0758 690 256</a></li>
         </ul>
     </nav>
 
@@ -212,7 +215,12 @@
         <div id="comanda" class="rubrica">
             <div class="form-box">
                 <h2>Solicită Model</h2>
-                <p>Fiecare pjesă se realizează manual. Lasă-ți datele și te sun rapid.</p>
+                <div class="contact-info">
+                    <p>Telefon: <strong>0758 690 256</strong></p>
+                    <a href="https://www.tiktok.com/@daniel_turlea87" target="_blank">
+                        <i class="fa-brands fa-tiktok"></i> Vezi lucrările pe TikTok
+                    </a>
+                </div>
                 <form action="https://formsubmit.co/ADRESA_TA_DE_EMAIL@GMAIL.COM" method="POST">
                     <div class="form-group">
                         <label>Nume Complet</label>
@@ -259,7 +267,6 @@
                 linkActiv.classList.add('active');
             }
             
-            // Auto-scroll sus când schimbi rubrica (util pe mobil)
             window.scrollTo(0, 0);
         }
     </script>
