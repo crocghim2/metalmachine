@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MetalMachine | Machete din Fier la Comandă</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Montserrat:wght@400;700;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary: #e67e22;       /* Portocaliu de foc / industrial */
+            --dark: #111215;          /* Gri-negru metalizat închis */
+            --silver-bright: #f0f2f5;  /* Argintiu pur lucios */
+            --silver-metal: #adb5bd;  /* Argintiu finisat / oțel */
+            --card-bg: #1a1c20;       /* Culoarea blocurilor de text */
+            --text-muted: #868e96;    /* Argintiu mat pentru descrieri */
+            --accent: #d35400;        /* Portocaliu închis la selecție */
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--dark);
+            color: var(--silver-bright);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3 { font-family: 'Montserrat', sans-serif; text-transform: uppercase; letter-spacing: 2px; }
+
+        /* --- NAVIGATION & LOGO MARE --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 5%;
+            background: rgba(17, 18, 21, 0.98);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid var(--silver-metal);
+            box-shadow: 0 4px 25px rgba(0,0,0,0.6);
+        }
+
+        .logo-container { display: flex; align-items: center; gap: 15px; }
+        .nav-logo-img { height: 55px; width: 55px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; }
+        .nav-logo-fallback { font-size: 2rem; color: var(--primary); animation: spin 20s linear infinite; }
+        
+        /* Fontul cel nou, mai mare și finisat */
+        .logo { 
+            font-family: 'Orbitron', sans-serif; 
+            font-weight: 900; 
+            font-size: 1.7rem; /* Mărit semnificativ */
+            color: var(--primary); 
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+        .logo span { 
+            color: var(--silver-bright); 
+            text-shadow: 0 0 10px rgba(240, 242, 245, 0.3); /* Efect de luciu argintiu */
+        }
+
+        nav ul { display: flex; list-style: none; align-items: center; }
+        nav ul li { margin-left: 30px; }
+        nav ul li a { text-decoration: none; color: var(--silver-metal); font-size: 0.95rem; font-weight: 600; transition: 0.3s; position: relative; padding-bottom: 5px; text-transform: uppercase; }
+        nav ul li a:hover { color: var(--primary); }
+        nav ul li a::after { content: ''; display: block; width: 0; height: 3px; background: var(--primary); transition: width .3s; position: absolute; bottom: 0; left: 0; }
+        nav ul li a:hover::after { width: 100%; }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(17, 18, 21, 0.8), rgba(17, 18, 21, 0.85)), url('https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            border-bottom: 4px solid var(--primary);
+        }
+
+        .hero h1 { font-family: 'Orbitron', sans-serif; font-size: 4.5rem; font-weight: 900; color: var(--silver-bright); margin-bottom: 20px; text-shadow: 3px 3px 15px rgba(0,0,0,0.9); }
+        .hero h1 span { color: var(--primary); }
+        .hero p { font-size: 1.25rem; color: var(--silver-metal); max-width: 650px; margin-bottom: 35px; }
+        
+        .btn {
+            background-color: var(--primary);
+            color: #fff;
+            padding: 16px 45px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 4px;
+            transition: 0.3s;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(230, 126, 34, 0.4);
+        }
+        .btn:hover { background-color: var(--accent); transform: translateY(-3px); box-shadow: 0 6px 20px rgba(230, 126, 34, 0.6); }
+
+        /* --- POVESTE SECTION --- */
+        .story { padding: 150px 5% 90px 5%; display: flex; align-items: center; gap: 50px; flex-wrap: wrap; background: linear-gradient(180deg, var(--dark), #1d1f24); }
+        .story-text { flex: 1; min-width: 300px; }
+        .story-text h2 { font-family: 'Orbitron', sans-serif; color: var(--primary); margin-bottom: 25px; font-size: 2.3rem; }
+        .story-text p { margin-bottom: 20px; color: var(--silver-bright); font-size: 1.1rem; }
+        .story-img { flex: 1; min-width: 300px; text-align: center; }
+        .story-img img { max-width: 330px; width: 100%; display: inline-block; border-radius: 50%; border: 5px solid var(--silver-metal); box-shadow: 0 12px 35px rgba(0,0,0,0.7); }
+
+        /* --- CATEGORIES --- */
+        .categories { padding: 100px 5%; background-color: #17181c; border-top: 1px solid #282a30; border-bottom: 1px solid #282a30; }
+        .section-title { text-align: center; margin-bottom: 60px; }
+        .section-title h2 { font-family: 'Orbitron', sans-serif; font-size: 2.3rem; margin-bottom: 15px; color: var(--silver-bright); }
+        .section-title h2 span { color: var(--primary); }
+        .section-title .line { width: 100px; height: 4px; background: var(--primary); margin: 0 auto; border-radius: 2px; }
+
+        .cat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .cat-card { background: var(--card-bg); padding: 40px; border-radius: 6px; text-align: center; transition: 0.3s; border: 1px solid #2b2e36; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        .cat-card:hover { border-color: var(--primary); transform: translateY(-10px); box-shadow: 0 15px 30px rgba(230,126,34,0.15); }
+        .cat-card i { font-size: 3.5rem; color: var(--primary); margin-bottom: 20px; }
+        .cat-card h3 { margin-bottom: 15px; font-size: 1.4rem; color: var(--silver-bright); font-family: 'Orbitron', sans-serif; }
+        .cat-card p { color: var(--text-muted); font-size: 1rem; }
+
+        /* --- GALERIE HOVER EFECT --- */
+        .featured { padding: 100px 5%; background: var(--dark); text-align: center; }
+        .featured-img-container { max-width: 850px; margin: 40px auto; border: 3px solid var(--silver-metal); border-radius: 6px; padding: 12px; background: var(--card-bg); box-shadow: 0 15px 45px rgba(0,0,0,0.7); transition: 0.4s; }
+        .featured-img-container:hover { border-color: var(--primary); box-shadow: 0 0 40px rgba(230, 126, 34, 0.3); }
+        .featured-img-container img { width: 100%; border-radius: 3px; display: block; }
+
+        /* --- FORM SECTION --- */
+        .order-form { padding: 100px 5%; background: #0f1012; }
+        .form-box { max-width: 700px; margin: 0 auto; background: var(--card-bg); padding: 50px; border-radius: 6px; border: 1px solid #2b2e36; box-shadow: 0 20px 45px rgba(0,0,0,0.6); }
+        .form-box h2 { font-family: 'Orbitron', sans-serif; margin-bottom: 15px; text-align: center; color: var(--primary); }
+        .form-box p { text-align: center; color: var(--silver-metal); margin-bottom: 30px; }
+        .form-group { margin-bottom: 25px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.95rem; color: var(--silver-metal); }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%; padding: 14px; background: #121316; border: 1px solid #3a3f4a; color: #fff; border-radius: 4px; font-size: 1rem; transition: 0.3s;
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 10px rgba(230,126,34,0.3); }
+        .submit-btn { width: 100%; background: var(--primary); color: #fff; border: none; padding: 16px; font-weight: bold; cursor: pointer; border-radius: 4px; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; font-family: 'Orbitron', sans-serif; }
+        .submit-btn:hover { background: var(--accent); box-shadow: 0 5px 25px rgba(230, 126, 34, 0.5); }
+
+        /* --- FOOTER --- */
+        footer { padding: 60px 5%; text-align: center; background: #0a0a0c; border-top: 2px solid var(--silver-metal); color: var(--text-muted); }
+        .socials { margin-bottom: 25px; }
+        .socials a { color: var(--silver-metal); font-size: 1.8rem; margin: 0 15px; transition: 0.3s; text-decoration: none; }
+        .socials a:hover { color: var(--primary); transform: translateY(-3px); display: inline-block; }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        @media (max-width: 992px) {
+            .logo { font-size: 1.4rem; }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.8rem; }
+            nav { padding: 10px 5%; }
+            nav ul { display: none; }
+            .story { text-align: center; }
+            .form-box { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo-container">
+            <img src="logo.png" alt="MetalMachine Logo" class="nav-logo-img" id="navLogo" onerror="tryNextFormat(this)">
+            <div id="logoIcon" class="nav-logo-fallback" style="display:none;"><i class="fa-solid fa-gear"></i></div>
+            <div class="logo">METAL<span>MACHINE</span></div>
+        </div>
+        <ul>
+            <li><a href="#hero">Acasă</a></li>
+            <li><a href="#story">Poveste</a></li>
+            <li><a href="#categorii">Categorii</a></li>
+            <li><a href="#galerie">Galerie</a></li>
+            <li><a href="#comanda">Comandă</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero" id="hero">
+        <h1>FĂURIT DIN <span>FIER</span></h1>
+        <p>Machete unicat de tractoare, mașini și utilaje grele, lucrate integral manual prin sudură brută și modelare în oțel.</p>
+        <a href="#comanda" class="btn">Solicită Lucrare</a>
+    </section>
+
+    <section class="story" id="story">
+        <div class="story-text">
+            <h2>Povestea Din Spatele Metalului</h2>
+            <p>Fiecare machetă care iese din atelierul nostru pornește de la piese brute din fier, foi de tablă groasă și zeci de ore de tăiat, polizat și sudat.</p>
+            <p>Nu folosim plastic sau matrițe turnate în masă. Greutatea fiecărui tractor și fiecare cuzinet ori cusătură de sudură vizibilă demonstrează autenticitatea muncii noastre.</p>
+            <p><strong>MetalMachine (Est. 2026)</strong> reprezintă pasiunea pură transformată în piese grele de colecție, create special să reziste o viață întreagă.</p>
+        </div>
+        <div class="story-img">
+            <img src="logo.png" alt="MetalMachine Brand Emblem" id="storyLogo" onerror="tryNextFormatStory(this)">
+        </div>
+    </section>
+
+    <section class="categories" id="categorii">
+        <div class="section-title">
+            <h2>Categorii de <span>Utilaje</span></h2>
+            <div class="line"></div>
+        </div>
+        <div class="cat-grid">
+            <div class="cat-card">
+                <i class="fa-solid fa-tractor"></i>
+                <h3>Tractoare</h3>
+                <p>Machete de tractoare agricole robuste, modele articulate masive, dotate cu lame funcționale sau cupe de oțel.</p>
+            </div>
+            <div class="cat-card">
+                <i class="fa-solid fa-car"></i>
+                <h3>Mașini</h3>
+                <p>Modele clasice de epocă, mașini de teren sau utilitare, reproduse cu linii agresive direct în tablă sudată.</p>
+            </div>
+            <div class="cat-card">
+                <i class="fa-solid fa-truck-monster"></i>
+                <h3>Utilaje Grele</h3>
+                <p>Excavatoare, stivuitoare sau camioane de șantier în miniatură, perfecte pentru colecții premium și cadouri memorabile.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="featured" id="galerie">
+        <div class="section-title">
+            <h2>Mândria Atelierului: <span>Tractorul cu Lamă</span></h2>
+            <div class="line"></div>
+        </div>
+        <div class="featured-img-container">
+            <img src="tractor.png" alt="Tractor din fier realizat manual de MetalMachine" onerror="this.src='https://images.unsplash.com/photo-1530124560677-bdaea02c9a5b?auto=format&fit=crop&w=1200&q=80'">
+        </div>
+    </section>
+
+    <section class="order-form" id="comanda">
+        <div class="form-box">
+            <h2>Solicită un Model la Comandă</h2>
+            <p>Fiecare piesă se realizează exclusiv pe bază de comandă personalizată. Lasă-mi detaliile mai jos și te voi contacta rapid la telefon.</p>
+            
+            <form action="https://formsubmit.co/ADRESA_TA_DE_EMAIL@GMAIL.COM" method="POST">
+                <input type="hidden" name="_captcha" value="false">
+                
+                <div class="form-group">
+                    <label for="nume">Nume Complet</label>
+                    <input type="text" id="nume" name="Nume Client" placeholder="Ex: Popescu Ion" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="telefon">Număr de Telefon</label>
+                    <input type="tel" id="telefon" name="Telefon" placeholder="Ex: 0722 xxx xxx" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="utilaj">Ce utilaj dorești?</label>
+                    <select id="utilaj" name="Model Solicitat">
+                        <option value="Tractor cu Lamă / Cupă">Tractor cu Lamă / Cupă (ca în poză)</option>
+                        <option value="Tractor Agricol Clasic">Tractor Agricol Clasic</option>
+                        <option value="Automobil / Mașină Retro">Automobil / Mașină Retro</option>
+                        <option value="Utilaj Greu">Utilaj Greu (Stivuitor, Excavator)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="mesaj">Detalii lucrare (dimensiuni, preferințe)</label>
+                    <textarea id="mesaj" name="Detalii Proiect" rows="5" placeholder="Menționează cum dorești să arate..." required></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn">Trimite Cererea</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="socials">
+            <a href="#" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+            <a href="#" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
+        </div>
+        <p>&copy; 2026 MetalMachine. Toate drepturile rezervate. Făurit cu mândrie în România.</p>
+    </footer>
+
+    <script>
+        function tryNextFormat(img) {
+            if (img.src.includes('logo.png')) {
+                img.src = 'logo.jpg';
+            } else if (img.src.includes('logo.jpg')) {
+                img.src = 'logo.jpeg';
+            } else {
+                img.style.display = 'none';
+                document.getElementById('logoIcon').style.display = 'block';
+            }
+        }
+
+        function tryNextFormatStory(img) {
+            if (img.src.includes('logo.png')) {
+                img.src = 'logo.jpg';
+            } else if (img.src.includes('logo.jpg')) {
+                img.src = 'logo.jpeg';
+            } else {
+                img.src = 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=800&q=80';
+            }
+        }
+    </script>
+</body>
+</html>
