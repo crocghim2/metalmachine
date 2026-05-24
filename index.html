@@ -1,4 +1,4 @@
-\<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
@@ -11,7 +11,7 @@
     <style>
         :root {
             --primary: #e67e22;       /* Portocaliu industrial */
-            --dark: #111215;          /* Gri-negru metalizat închis */
+            --dark: #111215;         /* Gri-negru metalizat închis */
             --silver-bright: #f0f2f5;  /* Argintiu pur lucios */
             --silver-metal: #adb5bd;  /* Argintiu finisat */
             --card-bg: #1a1c20;        
@@ -75,18 +75,19 @@
         .hero-content h1 { font-size: 4rem; font-weight: 900; color: var(--silver-bright); margin-bottom: 20px; text-shadow: 3px 3px 15px rgba(0,0,0,0.9); }
         .hero-content h1 span { color: var(--primary); }
         .hero-content p { font-size: 1.2rem; color: var(--silver-metal); max-width: 650px; margin-bottom: 35px; }
+        .btn-group { display: flex; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; justify-content: center; }
         .btn { background-color: var(--primary); color: #fff; padding: 16px 45px; text-decoration: none; font-weight: bold; border-radius: 4px; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; display: inline-block; }
         .btn:hover { background-color: #d35400; transform: translateY(-3px); }
+        .hero-contact { color: var(--silver-metal); font-size: 1.1rem; }
+        .hero-contact a { color: var(--primary); text-decoration: none; }
 
-        /* POVESTE */
+        /* POVESTE, CATEGORII, GALERIE, COMANDĂ */
         .story-container { display: flex; align-items: center; gap: 50px; flex-wrap: wrap; max-width: 1100px; margin: 40px auto 0 auto; }
         .story-text { flex: 1; min-width: 300px; }
         .story-text h2 { margin-bottom: 25px; font-size: 2.3rem; color: var(--primary); }
         .story-text p { margin-bottom: 20px; font-size: 1.1rem; }
         .story-img { flex: 1; min-width: 300px; text-align: center; }
         .story-img img { max-width: 100%; width: 330px; border-radius: 8px; border: 2px solid var(--silver-metal); box-shadow: 0 12px 35px rgba(0,0,0,0.7); }
-
-        /* CATEGORII */
         .section-title { text-align: center; margin-bottom: 50px; }
         .section-title h2 { font-size: 2.3rem; }
         .section-title h2 span { color: var(--primary); }
@@ -94,48 +95,28 @@
         .cat-card { background: var(--card-bg); padding: 40px; border-radius: 6px; text-align: center; border: 1px solid #2b2e36; }
         .cat-card i { font-size: 3.5rem; color: var(--primary); margin-bottom: 20px; }
         .cat-card h3 { margin-bottom: 15px; color: var(--silver-bright); }
-
-        /* GALERIE */
         .gallery-container { max-width: 800px; margin: 0 auto; text-align: center; }
-        .gallery-container h2 { margin-bottom: 30px; }
-        .gallery-container h2 span { color: var(--primary); }
         .img-box { border: 3px solid var(--silver-metal); border-radius: 6px; padding: 12px; background: var(--card-bg); }
         .img-box img { width: 100%; display: block; border-radius: 3px; }
-
-        /* COMANDĂ */
         .form-box { max-width: 650px; margin: 0 auto; background: var(--card-bg); padding: 40px; border-radius: 6px; border: 1px solid #2b2e36; }
-        .form-box h2 { text-align: center; margin-bottom: 15px; color: var(--primary); }
-        .form-box p { text-align: center; color: var(--silver-metal); margin-bottom: 30px; }
-        .contact-info { text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #333; }
-        .contact-info a { color: var(--primary); text-decoration: none; font-size: 1.2rem; font-weight: bold; }
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--silver-metal); }
         .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px; background: #121316; border: 1px solid #3a3f4a; color: #fff; border-radius: 4px; font-size: 1rem; }
         .submit-btn { width: 100%; background: var(--primary); color: #fff; border: none; padding: 15px; font-weight: bold; cursor: pointer; border-radius: 4px; font-size: 1.1rem; text-transform: uppercase; font-family: 'Orbitron', sans-serif; }
-        .submit-btn:hover { background: #d35400; }
 
-        /* FOOTER */
+        /* CONTACT PAGE */
+        .contact-page { max-width: 600px; margin: 0 auto; text-align: center; }
+        .contact-card { background: var(--card-bg); padding: 50px; border-radius: 10px; border: 1px solid #2b2e36; }
+        .contact-card a { display: block; margin: 20px 0; font-size: 1.5rem; color: var(--primary); text-decoration: none; font-weight: bold; }
+
         footer { padding: 30px 5%; text-align: center; background: #0a0a0c; border-top: 1px solid #222; width: 100%; color: var(--text-muted); margin-top: auto; }
 
-        /* EFECT SCHIMBARE PAGINĂ */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* AJUSTARE PENTRU TELEFOANE (MENIUL SE MUTĂ SUS) */
         @media (max-width: 768px) {
             body { flex-direction: column; }
             nav { position: relative; width: 100%; height: auto; padding: 20px; border-right: none; border-bottom: 2px solid var(--silver-metal); }
-            nav ul { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px; }
-            nav ul li { width: auto; }
-            nav ul li a { padding: 8px 12px; border-left: none; border-bottom: 3px solid transparent; }
-            nav ul li a:hover, nav ul li a.active { border-left-color: transparent; border-bottom-color: var(--primary); }
-            .logo-container { margin-bottom: 10px; }
-            .nav-logo-img { height: 60px; width: 60px; margin-bottom: 5px; }
             .main-content { margin-left: 0; width: 100%; }
-            .hero-content h1 { font-size: 2.5rem; }
-            .story-container { text-align: center; }
         }
     </style>
 </head>
@@ -152,7 +133,7 @@
             <li><a onclick="arataRubrica('categorii')" id="lnk-categorii"><i class="fa-solid fa-layer-group"></i> Categorii</a></li>
             <li><a onclick="arataRubrica('galerie')" id="lnk-galerie"><i class="fa-solid fa-images"></i> Galerie</a></li>
             <li><a onclick="arataRubrica('comanda')" id="lnk-comanda"><i class="fa-solid fa-file-invoice-dollar"></i> Comandă</a></li>
-            <li><a href="tel:0758690256"><i class="fa-solid fa-phone"></i> 0758 690 256</a></li>
+            <li><a onclick="arataRubrica('contact')" id="lnk-contact"><i class="fa-solid fa-phone"></i> Contact</a></li>
         </ul>
     </nav>
 
@@ -162,7 +143,13 @@
             <div class="hero-content">
                 <h1>FĂURIT DIN <span>FIER</span></h1>
                 <p>Machete unicat de tractoare, mașini și utilaje grele, lucrate integral manual prin sudură brută și modelare în oțel.</p>
-                <a onclick="arataRubrica('comanda')" class="btn">Solicită Lucrare</a>
+                <div class="btn-group">
+                    <a onclick="arataRubrica('comanda')" class="btn">Solicită Lucrare</a>
+                </div>
+                <div class="hero-contact">
+                    <p>Sună acum: <strong>0758 690 256</strong></p>
+                    <p>Urmărește-ne pe: <a href="https://www.tiktok.com/@daniel_turlea87" target="_blank"><i class="fa-brands fa-tiktok"></i> TikTok</a></p>
+                </div>
             </div>
         </div>
 
@@ -171,102 +158,63 @@
                 <div class="story-text">
                     <h2>Povestea Din Spatele Metalului</h2>
                     <p>Fiecare machetă care iese din atelierul nostru pornește de la piese brute din fier, foi de tablă groasă și zeci de ore de tăiat, polizat și sudat.</p>
-                    <p>Nu folosim plastic sau matrițe turnate în masă. Greutatea fiecărui tractor și fiecare cuzinet demonstrat mecanic arată autenticitatea muncii noastre.</p>
-                    <p><strong>MetalMachine (Est. 2026)</strong> reprezintă pasiunea pură transformată în piese grele de colecție, create special să reziste o viață întreagă.</p>
+                    <p><strong>MetalMachine (Est. 2026)</strong> reprezintă pasiunea pură transformată în piese grele de colecție.</p>
                 </div>
-                <div class="story-img">
-                    <img src="logo.png" alt="Daniel Portret">
-                </div>
+                <div class="story-img"><img src="logo.png" alt="MetalMachine"></div>
             </div>
         </div>
 
         <div id="categorii" class="rubrica">
-            <div class="section-title">
-                <h2>Categorii de <span>Utilaje</span></h2>
-            </div>
+            <div class="section-title"><h2>Categorii de <span>Utilaje</span></h2></div>
             <div class="cat-grid">
-                <div class="cat-card">
-                    <i class="fa-solid fa-tractor"></i>
-                    <h3>Tractoare</h3>
-                    <p>Machete de tractoare agricole robuste, modele articulate masive, dotate cu lame sau cupe din oțel pur.</p>
-                </div>
-                <div class="cat-card">
-                    <i class="fa-solid fa-car"></i>
-                    <h3>Mașini</h3>
-                    <p>Modele clasice de epocă, mașini de teren sau utilitare, reproduse agresiv direct în tablă sudată.</p>
-                </div>
-                <div class="cat-card">
-                    <i class="fa-solid fa-truck-monster"></i>
-                    <h3>Utilaje Grele</h3>
-                    <p>Excavatoare, stivuitoare sau camioane de șantier în miniatură, perfecte pentru colecții premium.</p>
-                </div>
+                <div class="cat-card"><i class="fa-solid fa-tractor"></i><h3>Tractoare</h3></div>
+                <div class="cat-card"><i class="fa-solid fa-car"></i><h3>Mașini</h3></div>
+                <div class="cat-card"><i class="fa-solid fa-truck-monster"></i><h3>Utilaje Grele</h3></div>
             </div>
         </div>
 
         <div id="galerie" class="rubrica">
             <div class="gallery-container">
                 <h2>Mândria Atelierului: <span>Tractorul cu Lamă</span></h2>
-                <div class="img-box">
-                    <img src="tractor.png" alt="Tractor Metal">
-                </div>
+                <div class="img-box"><img src="tractor.png" alt="Tractor Metal"></div>
             </div>
         </div>
 
         <div id="comanda" class="rubrica">
             <div class="form-box">
                 <h2>Solicită Model</h2>
-                <div class="contact-info">
-                    <p>Telefon: <strong>0758 690 256</strong></p>
-                    <a href="https://www.tiktok.com/@daniel_turlea87" target="_blank">
-                        <i class="fa-brands fa-tiktok"></i> Vezi lucrările pe TikTok
-                    </a>
-                </div>
                 <form action="https://formsubmit.co/ADRESA_TA_DE_EMAIL@GMAIL.COM" method="POST">
-                    <div class="form-group">
-                        <label>Nume Complet</label>
-                        <input type="text" name="Nume" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Număr de Telefon</label>
-                        <input type="tel" name="Telefon" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Ce utilaj dorești?</label>
-                        <select name="Model">
-                            <option value="Tractor cu Lamă">Tractor cu Lamă / Cupă</option>
-                            <option value="Tractor Clasic">Tractor Agricol Clasic</option>
-                            <option value="Masina">Automobil Retro</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Detalii lucrare</label>
-                        <textarea name="Detalii" rows="4" placeholder="Dimensiuni sau alte preferințe..." required></textarea>
-                    </div>
+                    <div class="form-group"><label>Nume</label><input type="text" name="Nume" required></div>
+                    <div class="form-group"><label>Telefon</label><input type="tel" name="Telefon" required></div>
+                    <div class="form-group"><label>Detalii</label><textarea name="Detalii" rows="4" required></textarea></div>
                     <button type="submit" class="submit-btn">Trimite Cererea</button>
                 </form>
             </div>
         </div>
 
+        <div id="contact" class="rubrica">
+            <div class="contact-page">
+                <h2>Contactează-ne</h2>
+                <div class="contact-card">
+                    <p>Pentru orice întrebare sau comandă personalizată:</p>
+                    <a href="tel:0758690256"><i class="fa-solid fa-phone"></i> 0758 690 256</a>
+                    <a href="https://www.tiktok.com/@daniel_turlea87" target="_blank"><i class="fa-brands fa-tiktok"></i> Vezi lucrările pe TikTok</a>
+                </div>
+            </div>
+        </div>
+
         <footer>
-            <p>&copy; 2026 MetalMachine. Toate drepturile rezervate. Făurit în România.</p>
+            <p>&copy; 2026 MetalMachine. Făurit în România.</p>
         </footer>
     </div>
 
     <script>
         function arataRubrica(idRubrica) {
-            let rubrici = document.querySelectorAll('.rubrica');
-            rubrici.forEach(r => r.classList.remove('active'));
-
-            let linkuri = document.querySelectorAll('nav ul li a');
-            linkuri.forEach(l => l.classList.remove('active'));
-
+            document.querySelectorAll('.rubrica').forEach(r => r.classList.remove('active'));
+            document.querySelectorAll('nav ul li a').forEach(l => l.classList.remove('active'));
             document.getElementById(idRubrica).classList.add('active');
-            
             let linkActiv = document.getElementById('lnk-' + idRubrica);
-            if(linkActiv) {
-                linkActiv.classList.add('active');
-            }
-            
+            if(linkActiv) linkActiv.classList.add('active');
             window.scrollTo(0, 0);
         }
     </script>
