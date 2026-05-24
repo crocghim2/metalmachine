@@ -150,6 +150,19 @@
             <li><a onclick="arataRubrica('galerie')" id="lnk-galerie"><i class="fa-solid fa-images"></i> <span class="ro">Galerie</span><span class="en">Gallery</span></a></li>
             <li><a onclick="arataRubrica('comanda')" id="lnk-comanda"><i class="fa-solid fa-file-invoice-dollar"></i> <span class="ro">Comandă</span><span class="en">Order</span></a></li>
             <li><a onclick="arataRubrica('contact')" id="lnk-contact"><i class="fa-solid fa-phone"></i> <span class="ro">Contact</span><span class="en">Contact</span></a></li>
+            
+            <li id="nav-login">
+                <a onclick="arataRubrica('autentificare')" id="lnk-autentificare">
+                    <i class="fa-solid fa-user"></i> 
+                    <span class="ro">Contul Meu</span><span class="en">My Account</span>
+                </a>
+            </li>
+            <li id="nav-logout" style="display: none;">
+                <a id="btn-logout" style="color: var(--primary);">
+                    <i class="fa-solid fa-sign-out-alt"></i> 
+                    <span class="ro">Ieșire</span><span class="en">Logout</span>
+                </a>
+            </li>
         </ul>
     </nav>
 
@@ -277,6 +290,32 @@
             </div>
         </div>
 
+        <div id="autentificare" class="rubrica">
+            <div class="form-box">
+                <h2 class="ro">Autentificare / Înregistrare</h2>
+                <h2 class="en">Login / Sign Up</h2>
+                
+                <p id="auth-mesaj" style="color: var(--primary); text-align: center; margin-bottom: 15px; font-weight: bold;"></p>
+
+                <div class="form-group">
+                    <label class="ro">E-mail</label><label class="en">E-mail</label>
+                    <input type="email" id="email-auth" placeholder="exemplu@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label class="ro">Parolă</label><label class="en">Password</label>
+                    <input type="password" id="parola-auth" placeholder="Minim 6 caractere" required>
+                </div>
+                
+                <button id="btn-login" class="submit-btn" style="margin-bottom: 15px;">
+                    <span class="ro">Intră în cont</span><span class="en">Login</span>
+                </button>
+                
+                <button id="btn-signup" class="submit-btn" style="background: transparent; border: 2px solid var(--primary); color: var(--primary);">
+                    <span class="ro">Creează Cont Nou</span><span class="en">Create Account</span>
+                </button>
+            </div>
+        </div>
+
         <footer>
             <p class="ro">&copy; 2026 MetalMachine. Făurit în România.</p>
             <p class="en">&copy; 2026 MetalMachine. Crafted in Romania.</p>
@@ -294,18 +333,109 @@
         }
 
         function schimbaLimba(lang) {
-            // Schimba clasa pe body pentru a ascunde/afisa textele
             if (lang === 'en') {
                 document.body.classList.add('lang-en');
             } else {
                 document.body.classList.remove('lang-en');
             }
-
-            // Actualizare butoane meniu
             document.getElementById('btn-ro').classList.remove('active');
             document.getElementById('btn-en').classList.remove('active');
             document.getElementById('btn-' + lang).classList.add('active');
         }
+    </script>
+
+    <script type="module">
+        // Importăm Firebase direct de pe CDN (adaptat pentru plain HTML web)
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        // Datele tale unice de la Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAXMHHuAwefEoVYJZh8eiEFu2l6q-fmLpI",
+            authDomain: "metalic2.firebaseapp.com",
+            projectId: "metalic2",
+            storageBucket: "metalic2.firebasestorage.app",
+            messagingSenderId: "1025361495548",
+            appId: "1:1025361495548:web:4df635aec57ad392a99e79",
+            measurementId: "G-CXCV6JP307"
+        };
+
+        // Inițializare aplicație
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const auth = getAuth(app);
+
+        // Preiau elementele HTML
+        const emailInput = document.getElementById("email-auth");
+        const passwordInput = document.getElementById("parola-auth");
+        const btnLogin = document.getElementById("btn-login");
+        const btnSignup = document.getElementById("btn-signup");
+        const btnLogout = document.getElementById("btn-logout");
+        const mesajAuth = document.getElementById("auth-mesaj");
+        
+        const navLogin = document.getElementById("nav-login");
+        const navLogout = document.getElementById("nav-logout");
+
+        // Afișează mesaje scurte utilizatorului
+        function afiseazaMesaj(mesaj) {
+            mesajAuth.textContent = mesaj;
+            setTimeout(() => { mesajAuth.textContent = ""; }, 4000);
+        }
+
+        // SIGN UP
+        btnSignup.addEventListener("click", () => {
+            const email = emailInput.value;
+            const password = passwordInput.value;
+            
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    afiseazaMesaj(document.body.classList.contains("lang-en") ? "Account created successfully!" : "Cont creat cu succes!");
+                    emailInput.value = ""; passwordInput.value = "";
+                    arataRubrica('acasa');
+                })
+                .catch((error) => {
+                    afiseazaMesaj("Eroare: " + error.message);
+                });
+        });
+
+        // LOGIN
+        btnLogin.addEventListener("click", () => {
+            const email = emailInput.value;
+            const password = passwordInput.value;
+
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    emailInput.value = ""; passwordInput.value = "";
+                    arataRubrica('acasa');
+                })
+                .catch((error) => {
+                    afiseazaMesaj(document.body.classList.contains("lang-en") ? "Invalid credentials!" : "Date de conectare incorecte!");
+                });
+        });
+
+        // LOGOUT
+        btnLogout.addEventListener("click", () => {
+            signOut(auth).then(() => {
+                afiseazaMesaj(document.body.classList.contains("lang-en") ? "Logged out." : "Te-ai deconectat.");
+                arataRubrica('acasa');
+            }).catch((error) => {
+                console.error("Eroare la logout:", error);
+            });
+        });
+
+        // MONITORIZEAZĂ DACĂ ESTE LOGAT SAU NU
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // E logat
+                navLogin.style.display = "none";
+                navLogout.style.display = "block";
+            } else {
+                // Nu e logat
+                navLogin.style.display = "block";
+                navLogout.style.display = "none";
+            }
+        });
     </script>
 </body>
 </html>
