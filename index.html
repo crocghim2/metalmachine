@@ -16,48 +16,70 @@
             --silver-metal: #adb5bd;  /* Argintiu finisat */
             --card-bg: #1a1c20;       
             --text-muted: #868e96;    
+            --sidebar-width: 260px;   /* Lățimea meniului din stânga */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Open Sans', sans-serif; background-color: var(--dark); color: var(--silver-bright); line-height: 1.6; overflow-x: hidden; }
+        body { font-family: 'Open Sans', sans-serif; background-color: var(--dark); color: var(--silver-bright); line-height: 1.6; overflow-x: hidden; display: flex; }
         h1, h2, h3 { font-family: 'Orbitron', sans-serif; text-transform: uppercase; letter-spacing: 2px; }
 
-        /* NAVIGARE FIXĂ */
+        /* MENIU LATERAL (STÂNGA) */
         nav { 
-            display: flex; justify-content: space-between; align-items: center; 
-            padding: 12px 5%; background: #111215; border-bottom: 2px solid var(--silver-metal); 
-            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; 
+            position: fixed; top: 0; left: 0; 
+            width: var(--sidebar-width); height: 100vh; 
+            background: #0d0e10; border-right: 2px solid var(--silver-metal); 
+            display: flex; flex-direction: column; align-items: center; 
+            padding: 40px 20px; z-index: 1000; 
         }
-        .logo-container { display: flex; align-items: center; gap: 15px; }
-        .nav-logo-img { height: 50px; width: 50px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; }
-        .logo { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 1.7rem; color: var(--primary); letter-spacing: 2px; }
+        
+        .logo-container { text-align: center; margin-bottom: 50px; width: 100%; }
+        .nav-logo-img { height: 80px; width: 80px; border-radius: 50%; border: 2px solid var(--primary); object-fit: cover; margin-bottom: 15px; }
+        .logo { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 1.4rem; color: var(--primary); letter-spacing: 1px; }
         .logo span { color: var(--silver-bright); }
-        nav ul { display: flex; list-style: none; align-items: center; }
-        nav ul li { margin-left: 25px; }
-        nav ul li a { text-decoration: none; color: var(--silver-metal); font-size: 0.95rem; font-weight: 600; text-transform: uppercase; transition: 0.3s; cursor: pointer; }
-        nav ul li a:hover, nav ul li a.active { color: var(--primary); }
+        
+        nav ul { list-style: none; width: 100%; display: flex; flex-direction: column; gap: 15px; }
+        nav ul li { width: 100%; }
+        nav ul li a { 
+            text-decoration: none; color: var(--silver-metal); 
+            font-size: 0.95rem; font-weight: 600; text-transform: uppercase; 
+            transition: 0.3s; cursor: pointer; display: flex; align-items: center; 
+            gap: 12px; padding: 12px 15px; border-radius: 4px; border-left: 3px solid transparent;
+        }
+        nav ul li a:hover, nav ul li a.active { 
+            color: var(--primary); background: rgba(230, 126, 34, 0.08); border-left-color: var(--primary); 
+        }
+
+        /* CONȚINUTUL DIN DREAPTA */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            width: calc(100% - var(--sidebar-width));
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
         /* STRUCTURĂ RUBRICI SEPARATE */
         .rubrica { 
-            display: none; /* Ascundem toate rubricile implicit */
-            padding: 120px 5% 60px 5%; 
-            min-height: calc(100vh - 60px); 
+            display: none; 
+            padding: 60px 5%; 
+            flex: 1;
             width: 100%;
+            animation: fadeIn 0.4s ease-in-out;
         }
         .rubrica.active { 
-            display: block; /* Afișăm doar rubrica selectată */
+            display: block; 
         }
 
         /* ACASĂ (HERO) */
-        .hero-content { height: 65vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-        .hero-content h1 { font-size: 4.5rem; font-weight: 900; color: var(--silver-bright); margin-bottom: 20px; text-shadow: 3px 3px 15px rgba(0,0,0,0.9); }
+        .hero-content { min-height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .hero-content h1 { font-size: 4rem; font-weight: 900; color: var(--silver-bright); margin-bottom: 20px; text-shadow: 3px 3px 15px rgba(0,0,0,0.9); }
         .hero-content h1 span { color: var(--primary); }
-        .hero-content p { font-size: 1.25rem; color: var(--silver-metal); max-width: 650px; margin-bottom: 35px; }
-        .btn { background-color: var(--primary); color: #fff; padding: 16px 45px; text-decoration: none; font-weight: bold; border-radius: 4px; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; }
+        .hero-content p { font-size: 1.2rem; color: var(--silver-metal); max-width: 650px; margin-bottom: 35px; }
+        .btn { background-color: var(--primary); color: #fff; padding: 16px 45px; text-decoration: none; font-weight: bold; border-radius: 4px; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; display: inline-block; }
         .btn:hover { background-color: #d35400; transform: translateY(-3px); }
 
         /* POVESTE */
-        .story-container { display: flex; align-items: center; gap: 50px; flex-wrap: wrap; max-width: 1200px; margin: 0 auto; }
+        .story-container { display: flex; align-items: center; gap: 50px; flex-wrap: wrap; max-width: 1100px; margin: 40px auto 0 auto; }
         .story-text { flex: 1; min-width: 300px; }
         .story-text h2 { margin-bottom: 25px; font-size: 2.3rem; color: var(--primary); }
         .story-text p { margin-bottom: 20px; font-size: 1.1rem; }
@@ -68,13 +90,13 @@
         .section-title { text-align: center; margin-bottom: 50px; }
         .section-title h2 { font-size: 2.3rem; }
         .section-title h2 span { color: var(--primary); }
-        .cat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 1200px; margin: 0 auto; }
+        .cat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; max-width: 1100px; margin: 0 auto; }
         .cat-card { background: var(--card-bg); padding: 40px; border-radius: 6px; text-align: center; border: 1px solid #2b2e36; }
         .cat-card i { font-size: 3.5rem; color: var(--primary); margin-bottom: 20px; }
         .cat-card h3 { margin-bottom: 15px; color: var(--silver-bright); }
 
         /* GALERIE */
-        .gallery-container { max-width: 850px; margin: 0 auto; text-align: center; }
+        .gallery-container { max-width: 800px; margin: 0 auto; text-align: center; }
         .gallery-container h2 { margin-bottom: 30px; }
         .gallery-container h2 span { color: var(--primary); }
         .img-box { border: 3px solid var(--silver-metal); border-radius: 6px; padding: 12px; background: var(--card-bg); }
@@ -91,11 +113,26 @@
         .submit-btn:hover { background: #d35400; }
 
         /* FOOTER */
-        footer { padding: 30px 5%; text-align: center; background: #0a0a0c; border-top: 2px solid var(--silver-metal); width: 100%; position: relative; margin-top: auto; color: var(--text-muted); }
+        footer { padding: 30px 5%; text-align: center; background: #0a0a0c; border-top: 1px solid #222; width: 100%; color: var(--text-muted); margin-top: auto; }
 
+        /* EFECT SCHIMBARE PAGINĂ */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* AJUSTARE PENTRU TELEFOANE (MENIUL SE MUTĂ SUS) */
         @media (max-width: 768px) {
+            body { flex-direction: column; }
+            nav { position: relative; width: 100%; height: auto; padding: 20px; border-right: none; border-bottom: 2px solid var(--silver-metal); }
+            nav ul { flex-direction: row; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 10px; }
+            nav ul li { width: auto; }
+            nav ul li a { padding: 8px 12px; border-left: none; border-bottom: 3px solid transparent; }
+            nav ul li a:hover, nav ul li a.active { border-left-color: transparent; border-bottom-color: var(--primary); }
+            .logo-container { margin-bottom: 10px; }
+            .nav-logo-img { height: 60px; width: 60px; margin-bottom: 5px; }
+            .main-content { margin-left: 0; width: 100%; }
             .hero-content h1 { font-size: 2.5rem; }
-            nav ul { display: none; }
             .story-container { text-align: center; }
         }
     </style>
@@ -108,120 +145,122 @@
             <div class="logo">METAL<span>MACHINE</span></div>
         </div>
         <ul>
-            <li><a onclick="arataRubrica('acasa')" id="lnk-acasa" class="active">Acasă</a></li>
-            <li><a onclick="arataRubrica('poveste')" id="lnk-poveste">Poveste</a></li>
-            <li><a onclick="arataRubrica('categorii')" id="lnk-categorii">Categorii</a></li>
-            <li><a onclick="arataRubrica('galerie')" id="lnk-galerie">Galerie</a></li>
-            <li><a onclick="arataRubrica('comanda')" id="lnk-comanda">Comandă</a></li>
+            <li><a onclick="arataRubrica('acasa')" id="lnk-acasa" class="active"><i class="fa-solid fa-house"></i> Acasă</a></li>
+            <li><a onclick="arataRubrica('poveste')" id="lnk-poveste"><i class="fa-solid fa-book-open"></i> Poveste</a></li>
+            <li><a onclick="arataRubrica('categorii')" id="lnk-categorii"><i class="fa-solid fa-layer-group"></i> Categorii</a></li>
+            <li><a onclick="arataRubrica('galerie')" id="lnk-galerie"><i class="fa-solid fa-images"></i> Galerie</a></li>
+            <li><a onclick="arataRubrica('comanda')" id="lnk-comanda"><i class="fa-solid fa-file-invoice-dollar"></i> Comandă</a></li>
         </ul>
     </nav>
 
-    <div id="acasa" class="rubrica active">
-        <div class="hero-content">
-            <h1>FĂURIT DIN <span>FIER</span></h1>
-            <p>Machete unicat de tractoare, mașini și utilaje grele, lucrate integral manual prin sudură brută și modelare în oțel.</p>
-            <a onclick="arataRubrica('comanda')" class="btn">Solicită Lucrare</a>
+    <div class="main-content">
+        
+        <div id="acasa" class="rubrica active">
+            <div class="hero-content">
+                <h1>FĂURIT DIN <span>FIER</span></h1>
+                <p>Machete unicat de tractoare, mașini și utilaje grele, lucrate integral manual prin sudură brută și modelare în oțel.</p>
+                <a onclick="arataRubrica('comanda')" class="btn">Solicită Lucrare</a>
+            </div>
         </div>
-    </div>
 
-    <div id="poveste" class="rubrica">
-        <div class="story-container">
-            <div class="story-text">
-                <h2>Povestea Din Spatele Metalului</h2>
-                <p>Fiecare machetă care iese din atelierul nostru pornește de la piese brute din fier, foi de tablă groasă și zeci de ore de tăiat, polizat și sudat.</p>
-                <p>Nu folosim plastic sau matrițe turnate în masă. Greutatea fiecărui tractor și fiecare cusătură de sudură vizibilă demonstrează autenticitatea muncii noastre.</p>
-                <p><strong>MetalMachine (Est. 2026)</strong> reprezintă pasiunea pură transformată în piese grele de colecție, create special să reziste o viață întreagă.</p>
-            </div>
-            <div class="story-img">
-                <img src="logo.png" alt="Daniel Portret">
-            </div>
-        </div>
-    </div>
-
-    <div id="categorii" class="rubrica">
-        <div class="section-title">
-            <h2>Categorii de <span>Utilaje</span></h2>
-        </div>
-        <div class="cat-grid">
-            <div class="cat-card">
-                <i class="fa-solid fa-tractor"></i>
-                <h3>Tractoare</h3>
-                <p>Machete de tractoare agricole robuste, modele articulate masive, dotate cu lame sau cupe din oțel pur.</p>
-            </div>
-            <div class="cat-card">
-                <i class="fa-solid fa-car"></i>
-                <h3>Mașini</h3>
-                <p>Modele clasice de epocă, mașini de teren sau utilitare, reproduse agresiv direct în tablă sudată.</p>
-            </div>
-            <div class="cat-card">
-                <i class="fa-solid fa-truck-monster"></i>
-                <h3>Utilaje Grele</h3>
-                <p>Excavatoare, stivuitoare sau camioane de șantier în miniatură, perfecte pentru colecții premium.</p>
-            </div>
-        </div>
-    </div>
-
-    <div id="galerie" class="rubrica">
-        <div class="gallery-container">
-            <h2>Mândria Atelierului: <span>Tractorul cu Lamă</span></h2>
-            <div class="img-box">
-                <img src="tractor.png" alt="Tractor Metal">
-            </div>
-        </div>
-    </div>
-
-    <div id="comanda" class="rubrica">
-        <div class="form-box">
-            <h2>Solicită Model</h2>
-            <p>Fiecare piesă se realizează manual. Lasă-ți datele și te sun rapid.</p>
-            <form action="https://formsubmit.co/ADRESA_TA_DE_EMAIL@GMAIL.COM" method="POST">
-                <div class="form-group">
-                    <label>Nume Complet</label>
-                    <input type="text" name="Nume" required>
+        <div id="poveste" class="rubrica">
+            <div class="story-container">
+                <div class="story-text">
+                    <h2>Povestea Din Spatele Metalului</h2>
+                    <p>Fiecare machetă care iese din atelierul nostru pornește de la piese brute din fier, foi de tablă groasă și zeci de ore de tăiat, polizat și sudat.</p>
+                    <p>Nu folosim plastic sau matrițe turnate în masă. Greutatea fiecărui tractor și fiecare cuzinet demonstrat mecanic arată autenticitatea muncii noastre.</p>
+                    <p><strong>MetalMachine (Est. 2026)</strong> reprezintă pasiunea pură transformată în piese grele de colecție, create special să reziste o viață întreagă.</p>
                 </div>
-                <div class="form-group">
-                    <label>Număr de Telefon</label>
-                    <input type="tel" name="Telefon" required>
+                <div class="story-img">
+                    <img src="logo.png" alt="Daniel Portret">
                 </div>
-                <div class="form-group">
-                    <label>Ce utilaj dorești?</label>
-                    <select name="Model">
-                        <option value="Tractor cu Lamă">Tractor cu Lamă / Cupă</option>
-                        <option value="Tractor Clasic">Tractor Agricol Clasic</option>
-                        <option value="Masina">Automobil Retro</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Detalii lucrare</label>
-                    <textarea name="Detalii" rows="4" placeholder="Dimensiuni sau alte preferințe..." required></textarea>
-                </div>
-                <button type="submit" class="submit-btn">Trimite Cererea</button>
-            </form>
+            </div>
         </div>
-    </div>
 
-    <footer>
-        <p>&copy; 2026 MetalMachine. Făurit cu mândrie în România.</p>
-    </footer>
+        <div id="categorii" class="rubrica">
+            <div class="section-title">
+                <h2>Categorii de <span>Utilaje</span></h2>
+            </div>
+            <div class="cat-grid">
+                <div class="cat-card">
+                    <i class="fa-solid fa-tractor"></i>
+                    <h3>Tractoare</h3>
+                    <p>Machete de tractoare agricole robuste, modele articulate masive, dotate cu lame sau cupe din oțel pur.</p>
+                </div>
+                <div class="cat-card">
+                    <i class="fa-solid fa-car"></i>
+                    <h3>Mașini</h3>
+                    <p>Modele clasice de epocă, mașini de teren sau utilitare, reproduse agresiv direct în tablă sudată.</p>
+                </div>
+                <div class="cat-card">
+                    <i class="fa-solid fa-truck-monster"></i>
+                    <h3>Utilaje Grele</h3>
+                    <p>Excavatoare, stivuitoare sau camioane de șantier în miniatură, perfecte pentru colecții premium.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="galerie" class="rubrica">
+            <div class="gallery-container">
+                <h2>Mândria Atelierului: <span>Tractorul cu Lamă</span></h2>
+                <div class="img-box">
+                    <img src="tractor.png" alt="Tractor Metal">
+                </div>
+            </div>
+        </div>
+
+        <div id="comanda" class="rubrica">
+            <div class="form-box">
+                <h2>Solicită Model</h2>
+                <p>Fiecare pjesă se realizează manual. Lasă-ți datele și te sun rapid.</p>
+                <form action="https://formsubmit.co/ADRESA_TA_DE_EMAIL@GMAIL.COM" method="POST">
+                    <div class="form-group">
+                        <label>Nume Complet</label>
+                        <input type="text" name="Nume" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Număr de Telefon</label>
+                        <input type="tel" name="Telefon" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Ce utilaj dorești?</label>
+                        <select name="Model">
+                            <option value="Tractor cu Lamă">Tractor cu Lamă / Cupă</option>
+                            <option value="Tractor Clasic">Tractor Agricol Clasic</option>
+                            <option value="Masina">Automobil Retro</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Detalii lucrare</label>
+                        <textarea name="Detalii" rows="4" placeholder="Dimensiuni sau alte preferințe..." required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Trimite Cererea</button>
+                </form>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 MetalMachine. Toate drepturile rezervate. Făurit în România.</p>
+        </footer>
+    </div>
 
     <script>
         function arataRubrica(idRubrica) {
-            // Ascunde toate rubricile
             let rubrici = document.querySelectorAll('.rubrica');
             rubrici.forEach(r => r.classList.remove('active'));
 
-            // Dezactivează butoanele din meniu
             let linkuri = document.querySelectorAll('nav ul li a');
             linkuri.forEach(l => l.classList.remove('active'));
 
-            // Afișează doar rubrica pe care s-a dat click
             document.getElementById(idRubrica).classList.add('active');
             
-            // Colorează butonul selectat în meniu
             let linkActiv = document.getElementById('lnk-' + idRubrica);
             if(linkActiv) {
                 linkActiv.classList.add('active');
             }
+            
+            // Auto-scroll sus când schimbi rubrica (util pe mobil)
+            window.scrollTo(0, 0);
         }
     </script>
 </body>
