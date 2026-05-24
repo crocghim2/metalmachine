@@ -145,6 +145,21 @@
             transform: translateY(-2px);
         }
 
+        /* CARDURI ADMIN */
+        .admin-form-card {
+            background: #202227;
+            border: 1px solid #3a3f4a;
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .admin-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         @media (max-width: 768px) {
@@ -183,7 +198,14 @@
             <li id="nav-logout" style="display: none;">
                 <a id="btn-logout" style="color: var(--primary);">
                     <i class="fa-solid fa-sign-out-alt"></i> 
-                    <span class="ro">Ieșire</span><span class="en">Logout</span>
+                    <span class="ro">Ieșire Client</span><span class="en">Logout</span>
+                </a>
+            </li>
+
+            <li>
+                <a onclick="arataRubrica('admin-panel')" id="lnk-admin-panel" style="border-left: 3px solid #f1c40f;">
+                    <i class="fa-solid fa-user-shield" style="color: #f1c40f;"></i> 
+                    <span class="ro" style="color: #f1c40f;">Panou Admin</span><span class="en" style="color: #f1c40f;">Admin Panel</span>
                 </a>
             </li>
         </ul>
@@ -274,22 +296,22 @@
             <div class="form-box">
                 <h2 class="ro">Solicită Model</h2>
                 <h2 class="en">Request a Model</h2>
-                <form action="https://formsubmit.co/ADRESA_TA_DE_EMAIL@GMAIL.COM" method="POST">
+                <form id="orderForm">
                     <div class="form-group">
                         <label class="ro">Nume</label><label class="en">Name</label>
-                        <input type="text" name="Nume" required>
+                        <input type="text" id="form-nume" required>
                     </div>
                     <div class="form-group">
                         <label class="ro">E-mail</label><label class="en">E-mail</label>
-                        <input type="email" name="Email" required>
+                        <input type="email" id="form-email" required>
                     </div>
                     <div class="form-group">
                         <label class="ro">Telefon</label><label class="en">Phone</label>
-                        <input type="tel" name="Telefon" required>
+                        <input type="tel" id="form-telefon" required>
                     </div>
                     <div class="form-group">
-                        <label class="ro">Detalii</label><label class="en">Details</label>
-                        <textarea name="Detalii" rows="4" required></textarea>
+                        <label class="ro">Detalii Utilaj Solicitat</label><label class="en">Requested Machine Details</label>
+                        <textarea id="form-detalii" rows="4" required></textarea>
                     </div>
                     <button type="submit" class="submit-btn ro">Trimite Cererea</button>
                     <button type="submit" class="submit-btn en">Send Request</button>
@@ -328,6 +350,31 @@
             </div>
         </div>
 
+        <div id="admin-panel" class="rubrica">
+            <div id="admin-login-view" class="form-box">
+                <h2 style="color: #f1c40f; text-align: center; margin-bottom: 20px;"><i class="fa-solid fa-lock"></i> Autentificare Admin</h2>
+                <div class="form-group">
+                    <label>E-mail Admin</label>
+                    <input type="email" id="admin-email-input" placeholder="nume@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Parolă Admin</label>
+                    <input type="password" id="admin-pass-input" placeholder="Introdu parola" required>
+                </div>
+                <button id="btn-login-admin" class="submit-btn" style="background: #f1c40f; color: #000;">Intră în Panou</button>
+            </div>
+
+            <div id="admin-dashboard-view" style="display: none; max-width: 900px; margin: 0 auto;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid #f1c40f; padding-bottom: 10px;">
+                    <h2>Formulare Primite</h2>
+                    <button id="btn-logout-admin" class="lang-btn" style="border-color: #e74c3c; color: #e74c3c;">Ieșire Admin</button>
+                </div>
+
+                <div id="admin-forms-container">
+                    </div>
+            </div>
+        </div>
+
         <footer>
             <p class="ro">&copy; 2026 MetalMachine. Făurit în România.</p>
             <p class="en">&copy; 2026 MetalMachine. Crafted in Romania.</p>
@@ -361,7 +408,6 @@
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-        // Datele tale unice de la Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyAXMHHuAwefEoVYJZh8eiEFu2l6q-fmLpI",
             authDomain: "metalic2.firebaseapp.com",
@@ -372,18 +418,15 @@
             measurementId: "G-CXCV6JP307"
         };
 
-        // Inițializare
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
         const auth = getAuth(app);
         const provider = new GoogleAuthProvider();
 
-        // Elemente HTML
         const btnGoogle = document.getElementById("btn-google");
         const btnLogout = document.getElementById("btn-logout");
         const mesajAuth = document.getElementById("auth-mesaj");
         const userInfo = document.getElementById("user-info");
-        
         const navLogin = document.getElementById("nav-login");
         const navLogout = document.getElementById("nav-logout");
 
@@ -392,7 +435,6 @@
             setTimeout(() => { mesajAuth.textContent = ""; }, 4000);
         }
 
-        // LOGARE CU GOOGLE POPUP
         btnGoogle.addEventListener("click", () => {
             signInWithPopup(auth, provider)
                 .then((result) => {
@@ -401,42 +443,157 @@
                     setTimeout(() => { arataRubrica('acasa'); }, 1500);
                 })
                 .catch((error) => {
-                    console.error("Eroare la logare:", error);
-                    afiseazaMesaj(document.body.classList.contains("lang-en") ? "Login failed. Try again!" : "Autentificarea a eșuat. Încearcă din nou!");
+                    afiseazaMesaj("Autentificarea a eșuat!");
                 });
         });
 
-        // DECONECTARE (LOGOUT)
         btnLogout.addEventListener("click", () => {
-            signOut(auth).then(() => {
-                arataRubrica('acasa');
-            }).catch((error) => {
-                console.error("Eroare la logout:", error);
-            });
+            signOut(auth).then(() => { arataRubrica('acasa'); });
         });
 
-        // VERIFICARE STARE UTILIZATOR
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // Utilizatorul este conectat
                 navLogin.style.display = "none";
                 navLogout.style.display = "block";
-                
-                // Arătăm un mesaj personalizat în rubrica contului său
                 userInfo.style.display = "block";
-                userInfo.innerHTML = document.body.classList.contains("lang-en") ? 
-                    `You are logged in as: <br><strong>${user.displayName}</strong> (${user.email})` : 
-                    `Ești conectat ca: <br><strong>${user.displayName}</strong> (${user.email})`;
-                btnGoogle.style.display = "none"; // Ascundem butonul de login dacă e deja logat
+                userInfo.innerHTML = `Ești conectat ca: <br><strong>${user.displayName}</strong> (${user.email})`;
+                btnGoogle.style.display = "none";
             } else {
-                // Utilizatorul nu este conectat
                 navLogin.style.display = "block";
                 navLogout.style.display = "none";
-                
                 userInfo.style.display = "none";
-                btnGoogle.style.display = "flex"; // Reafișăm butonul Google
+                btnGoogle.style.display = "flex";
             }
         });
+    </script>
+
+    <script>
+        // --- 1. SALVAREA FORMULARELOR (Trimise de Clienți) ---
+        const orderForm = document.getElementById("orderForm");
+        
+        orderForm.addEventListener("submit", function(e) {
+            e.preventDefault(); // Oprim reîncărcarea paginii
+
+            // Preluăm datele introduse
+            const nume = document.getElementById("form-nume").value;
+            const email = document.getElementById("form-email").value;
+            const telefon = document.getElementById("form-telefon").value;
+            const detalii = document.getElementById("form-detalii").value;
+
+            // Creăm obiectul formularului
+            const nouFormular = {
+                id: Date.now(), // ID unic bazat pe timp
+                nume: nume,
+                email: email,
+                telefon: telefon,
+                detalii: detalii,
+                status: "În așteptare", // Status inițial
+                motiv: "" // Gol inițial
+            };
+
+            // Extragere din localStorage sau creăm o listă nouă goală
+            let listaFormulare = JSON.parse(localStorage.getItem("formulareMachete")) || [];
+            listaFormulare.push(nouFormular);
+
+            // Salvăm lista actualizată înapoi în memorie
+            localStorage.setItem("formulareMachete", JSON.stringify(listaFormulare));
+
+            // Notificăm clientul
+            alert("Cererea ta a fost înregistrată! O poți vedea în panoul de admin.");
+            orderForm.reset();
+            arataRubrica("acasa");
+        });
+
+
+        // --- 2. LOGICA DE AUTENTIFICARE ȘI PANOU PENTRU ADMIN ---
+        const btnLoginAdmin = document.getElementById("btn-login-admin");
+        const btnLogoutAdmin = document.getElementById("btn-logout-admin");
+        const adminLoginView = document.getElementById("admin-login-view");
+        const adminDashboardView = document.getElementById("admin-dashboard-view");
+        const containerFormulare = document.getElementById("admin-forms-container");
+
+        // Funcția de Logare Admin
+        btnLoginAdmin.addEventListener("click", () => {
+            const email = document.getElementById("admin-email-input").value;
+            const parola = document.getElementById("admin-pass-input").value;
+
+            if (email !== "" && parola === "tafetare123") {
+                // Parolă corectă! Schimbăm interfețele
+                adminLoginView.style.display = "none";
+                adminDashboardView.style.display = "block";
+                incarcaFormulareAdmin();
+            } else {
+                alert("E-mail valid sau Parolă incorectă (parola cerută: tafetare123)");
+            }
+        });
+
+        // Funcția de Ieșire Admin
+        btnLogoutAdmin.addEventListener("click", () => {
+            adminLoginView.style.display = "block";
+            adminDashboardView.style.display = "none";
+            document.getElementById("admin-pass-input").value = ""; // Ștergem parola scrisă
+        });
+
+        // Funcția care afișează formularele primite în timp real
+        function incarcaFormulareAdmin() {
+            containerFormulare.innerHTML = "";
+            let listaFormulare = JSON.parse(localStorage.getItem("formulareMachete")) || [];
+
+            if (listaFormulare.length === 0) {
+                containerFormulare.innerHTML = `<p style="text-align: center; color: var(--text-muted); margin-top: 20px;">Nu s-a trimis niciun formular până acum.</p>`;
+                return;
+            }
+
+            // Generăm fiecare formular în panou
+            listaFormulare.forEach(form => {
+                let culoareStatus = "#e67e22"; // Portocaliu pt în așteptare
+                if (form.status === "Acceptat") culoareStatus = "#2ecc71"; // Verde
+                if (form.status === "Respins") culoareStatus = "#e74c3c"; // Roșu
+
+                const card = document.createElement("div");
+                card.className = "admin-form-card";
+                card.innerHTML = `
+                    <h3>Client: ${form.nume}</h3>
+                    <p style="margin-top: 5px;"><strong>E-mail:</strong> ${form.email} | <strong>Telefon:</strong> ${form.telefon}</p>
+                    <p style="background: #111215; padding: 10px; border-radius: 4px; margin: 10px 0; border-left: 3px solid var(--primary);">
+                        <strong>Detalii:</strong> ${form.detalii}
+                    </p>
+                    <p><strong>Status Actual:</strong> <span style="color: ${culoareStatus}; font-weight: bold;">${form.status}</span></p>
+                    ${form.motiv ? `<p style="color: #e74c3c; margin-top: 5px;"><strong>Motiv Respingere:</strong> ${form.motiv}</p>` : ""}
+                    
+                    <div class="admin-actions">
+                        <button onclick="actualizeazaStatus(${form.id}, 'Acceptat')" class="lang-btn" style="border-color: #2ecc71; color: #2ecc71;">Acceptă</button>
+                        <button onclick="actualizeazaStatus(${form.id}, 'Respins')" class="lang-btn" style="border-color: #e74c3c; color: #e74c3c;">Respinge</button>
+                    </div>
+                `;
+                containerFormulare.appendChild(card);
+            });
+        }
+
+        // Funcția de procesare decizii (Acceptat / Respins + Motiv)
+        window.actualizeazaStatus = function(idFormular, noulStatus) {
+            let listaFormulare = JSON.parse(localStorage.getItem("formulareMachete")) || [];
+            let index = listaFormulare.findIndex(f => f.id === idFormular);
+
+            if (index !== -1) {
+                if (noulStatus === "Respins") {
+                    // Dacă e respins, deschidem o casetă text unde introduci motivul
+                    let motivRespingere = prompt("Introdu motivul pentru care respingi această lucrare:");
+                    
+                    if (motivRespingere === null) return; // Utilizatorul a apăsat Cancel, anulăm acțiunea
+                    if (motivRespingere.trim() === "") motivRespingere = "Nespecificat";
+                    
+                    listaFormulare[index].motiv = motivRespingere;
+                } else {
+                    // Dacă este acceptat, ștergem eventualele motive anterioare
+                    listaFormulare[index].motiv = "";
+                }
+
+                listaFormulare[index].status = noulStatus;
+                localStorage.setItem("formulareMachete", JSON.stringify(listaFormulare));
+                incarcaFormulareAdmin(); // Reîncărcăm lista actualizată pe ecran
+            }
+        };
     </script>
 </body>
 </html>
