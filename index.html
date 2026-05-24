@@ -3,70 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MetalMachine | Atelier Machete Fier</title>
+    <title>MetalMachine | Design Industrial</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        /* Variabile pentru ușurință în modificare */
         :root {
             --primary: #e67e22;
-            --dark: #111215;
-            --silver-bright: #f0f2f5;
-            --silver-metal: #adb5bd;
-            --card-bg: #1a1c20;
-            --sidebar-width: 280px;
+            --dark: #0a0a0c;
+            --sidebar-bg: #15161a;
+            --text-main: #e0e0e0;
+            --text-dim: #888;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Open Sans', sans-serif; background-color: var(--dark); color: var(--silver-bright); display: flex; min-height: 100vh; }
+        body { font-family: 'Open Sans', sans-serif; background-color: var(--dark); color: var(--text-main); display: flex; min-height: 100vh; }
 
-        /* --- Meniu Stânga --- */
+        /* --- MENIU SIDEBAR --- */
         nav { 
-            position: fixed; width: var(--sidebar-width); height: 100vh; 
-            background: #0d0e10; border-right: 2px solid var(--silver-metal); 
-            padding: 50px 20px; z-index: 1000;
+            width: 280px; background: var(--sidebar-bg); border-right: 1px solid #222;
+            padding: 40px 20px; display: flex; flex-direction: column; align-items: center;
         }
-        .logo { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 1.6rem; color: var(--primary); margin-bottom: 60px; text-align: center; }
-        .logo span { color: var(--silver-bright); }
-        
-        nav ul { list-style: none; }
-        nav ul li { margin-bottom: 15px; }
+
+        /* Logo stilizat */
+        .logo-area { text-align: center; margin-bottom: 50px; width: 100%; }
+        .logo-area img { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--primary); margin-bottom: 15px; }
+        .brand-name { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; color: #fff; letter-spacing: 2px; }
+        .brand-name span { color: var(--primary); display: block; font-size: 0.9rem; letter-spacing: 4px; }
+
+        /* Lista de navigare */
+        nav ul { list-style: none; width: 100%; }
+        nav ul li { margin-bottom: 10px; }
         nav ul li a { 
-            display: flex; align-items: center; gap: 15px; padding: 15px; 
-            color: var(--silver-metal); text-decoration: none; cursor: pointer;
-            text-transform: uppercase; font-weight: 600; border-radius: 6px; 
-            transition: all 0.3s ease; border: 1px solid transparent;
-        }
-        nav ul li a:hover, nav ul li a.active { 
-            color: var(--primary); background: rgba(230,126,34,0.05); border-color: var(--primary); 
+            display: flex; align-items: center; gap: 15px; padding: 15px 20px;
+            color: var(--text-dim); text-decoration: none; text-transform: uppercase;
+            font-weight: 600; font-size: 0.9rem; transition: all 0.3s ease;
+            border-radius: 8px; border-left: 4px solid transparent; cursor: pointer;
         }
 
-        /* --- Conținut Dreapta --- */
-        .main-content { margin-left: var(--sidebar-width); width: calc(100% - var(--sidebar-width)); padding: 60px; }
-        .rubrica { display: none; opacity: 0; transition: opacity 0.5s ease; }
-        .rubrica.active { display: block; opacity: 1; }
-        
-        h2 { font-family: 'Orbitron', sans-serif; color: var(--primary); margin-bottom: 30px; font-size: 2rem; }
-        
-        .box { background: var(--card-bg); padding: 40px; border-radius: 12px; border: 1px solid #333; margin-bottom: 30px; line-height: 1.8; }
-        
-        /* Elemente Comandă și Contact */
-        .input-style { width: 100%; padding: 12px; margin: 10px 0; background: #0d0e10; border: 1px solid #444; color: white; border-radius: 4px; }
-        .btn-submit { background: var(--primary); color: white; border: none; padding: 15px 30px; cursor: pointer; font-weight: bold; border-radius: 4px; margin-top: 10px; }
-        .phone-link { color: var(--primary); font-size: 2rem; text-decoration: none; font-weight: bold; }
+        /* Efectul de culoare la atingere (Hover & Active) */
+        nav ul li a:hover { color: #fff; background: #1e2025; border-left: 4px solid var(--primary); }
+        nav ul li a.active { color: var(--primary); background: #1e2025; border-left: 4px solid var(--primary); }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            body { flex-direction: column; }
-            nav { position: relative; width: 100%; height: auto; padding: 20px; }
-            .main-content { margin-left: 0; width: 100%; padding: 20px; }
-        }
+        /* --- CONȚINUT DREAPTA --- */
+        .main-content { flex: 1; padding: 60px; }
+        .rubrica { display: none; }
+        .rubrica.active { display: block; animation: fadeIn 0.4s; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        .box { background: #15161a; padding: 40px; border-radius: 12px; border: 1px solid #222; }
+        .phone-link { font-size: 2rem; color: var(--primary); text-decoration: none; }
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="logo">METAL<span>MACHINE</span></div>
+        <div class="logo-area">
+            <img src="logo.png" alt="MetalMachine" onerror="this.style.display='none'">
+            <div class="brand-name">METAL<span>MACHINE</span></div>
+        </div>
+
         <ul>
             <li><a onclick="arataRubrica('acasa')" id="lnk-acasa" class="active"><i class="fa-solid fa-house"></i> Acasă</a></li>
             <li><a onclick="arataRubrica('poveste')" id="lnk-poveste"><i class="fa-solid fa-book"></i> Poveste</a></li>
@@ -78,69 +74,44 @@
     </nav>
 
     <div class="main-content">
-        
         <div id="acasa" class="rubrica active">
-            <h1>FĂURIT DIN <span>FIER</span></h1>
-            <p style="font-size: 1.5rem; margin-top: 20px;">Machete unicat, lucrate manual prin sudură și pasiune.</p>
+            <h1>FĂURIT DIN FIER</h1>
+            <p>Machete unicat, lucrate manual.</p>
         </div>
 
         <div id="poveste" class="rubrica">
             <h2>Despre Atelier</h2>
-            <div class="box">
-                <p>Povestea MetalMachine a început din dorința de a transforma fierul rece în piese de artă cu suflet.</p>
-                <br>
-                <p>Fiecare model este sudat manual, folosind tehnici tradiționale de prelucrare a metalului, fără a recurge la matrițe industriale.</p>
-            </div>
+            <div class="box">Povestea noastră începută în 2026...</div>
         </div>
 
         <div id="categorii" class="rubrica">
-            <h2>Categorii Disponibile</h2>
-            <div class="box">
-                <ul>
-                    <li>Tractoare agricole de colecție</li>
-                    <li>Automobile retro personalizate</li>
-                    <li>Utilaje grele de șantier</li>
-                </ul>
-            </div>
+            <h2>Categorii</h2>
+            <div class="box">Tractoare, Mașini, Utilaje Grele.</div>
         </div>
 
         <div id="galerie" class="rubrica">
-            <h2>Galerie Foto</h2>
-            <div class="box">
-                <img src="tractor.png" alt="Machetă tractor" style="border-radius: 8px;">
-            </div>
+            <h2>Galerie</h2>
+            <div class="box"><img src="tractor.png" alt="Tractor"></div>
         </div>
 
         <div id="comanda" class="rubrica">
-            <h2>Trimite o comandă</h2>
-            <div class="box">
-                <form action="https://formsubmit.co/email@exemplu.com" method="POST">
-                    <input type="text" class="input-style" placeholder="Numele tău" required>
-                    <input type="email" class="input-style" placeholder="Adresa de email" required>
-                    <textarea class="input-style" rows="5" placeholder="Detalii comandă"></textarea>
-                    <button type="submit" class="btn-submit">Trimite mesajul</button>
-                </form>
-            </div>
+            <h2>Trimite Comandă</h2>
+            <div class="box">Formular comandă...</div>
         </div>
 
         <div id="contact" class="rubrica">
             <h2>Contact</h2>
             <div class="box">
-                <p>Ne poți găsi oricând pentru detalii suplimentare:</p>
-                <br>
-                <a href="tel:0758690256" class="phone-link"><i class="fa-solid fa-phone"></i> 0758 690 256</a>
+                <p>Ne poți apela la:</p><br>
+                <a href="tel:0758690256" class="phone-link">0758 690 256</a>
             </div>
         </div>
     </div>
 
     <script>
         function arataRubrica(id) {
-            // Ascunde tot
             document.querySelectorAll('.rubrica').forEach(r => r.classList.remove('active'));
-            // Resetează stilul meniului
             document.querySelectorAll('nav ul li a').forEach(a => a.classList.remove('active'));
-            
-            // Afișează selecția
             document.getElementById(id).classList.add('active');
             document.getElementById('lnk-' + id).classList.add('active');
         }
