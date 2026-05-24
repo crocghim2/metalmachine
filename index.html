@@ -95,6 +95,7 @@
         .cat-card { background: var(--card-bg); padding: 40px; border-radius: 6px; text-align: center; border: 1px solid #2b2e36; }
         .cat-card i { font-size: 3.5rem; color: var(--primary); margin-bottom: 20px; }
         .cat-card h3 { margin-bottom: 15px; color: var(--silver-bright); }
+        .cat-card p { font-size: 0.95rem; color: var(--text-muted); }
         .gallery-container { max-width: 800px; margin: 0 auto; text-align: center; }
         .img-box { border: 3px solid var(--silver-metal); border-radius: 6px; padding: 12px; background: var(--card-bg); }
         .img-box img { width: 100%; display: block; border-radius: 3px; }
@@ -167,9 +168,21 @@
         <div id="categorii" class="rubrica">
             <div class="section-title"><h2>Categorii de <span>Utilaje</span></h2></div>
             <div class="cat-grid">
-                <div class="cat-card"><i class="fa-solid fa-tractor"></i><h3>Tractoare</h3></div>
-                <div class="cat-card"><i class="fa-solid fa-car"></i><h3>Mașini</h3></div>
-                <div class="cat-card"><i class="fa-solid fa-truck-monster"></i><h3>Utilaje Grele</h3></div>
+                <div class="cat-card">
+                    <i class="fa-solid fa-tractor"></i>
+                    <h3>Tractoare</h3>
+                    <p>Modele detaliate ale utilajelor agricole iconice, recreate cu o atenție sporită la formele brute și robustețea originalului.</p>
+                </div>
+                <div class="cat-card">
+                    <i class="fa-solid fa-car"></i>
+                    <h3>Mașini</h3>
+                    <p>Autoturisme clasice sau moderne, stilizate prin tehnici de sudură industrială pentru un aspect vizual unic și masiv.</p>
+                </div>
+                <div class="cat-card">
+                    <i class="fa-solid fa-truck-monster"></i>
+                    <h3>Utilaje Grele</h3>
+                    <p>Excavatoare, buldozere și alte utilaje de șantier, transpuse la scară prin îmbinarea creativă a metalului dur.</p>
+                </div>
             </div>
         </div>
 
@@ -185,6 +198,7 @@
                 <h2>Solicită Model</h2>
                 <form action="https://formsubmit.co/ADRESA_TA_DE_EMAIL@GMAIL.COM" method="POST">
                     <div class="form-group"><label>Nume</label><input type="text" name="Nume" required></div>
+                    <div class="form-group"><label>E-mail</label><input type="email" name="Email" required></div>
                     <div class="form-group"><label>Telefon</label><input type="tel" name="Telefon" required></div>
                     <div class="form-group"><label>Detalii</label><textarea name="Detalii" rows="4" required></textarea></div>
                     <button type="submit" class="submit-btn">Trimite Cererea</button>
