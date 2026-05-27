@@ -8,12 +8,22 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Integrare EmailJS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+       (function(){
+          // ÎNLOCUIEȘTE CU CHEIA TA PUBLICĂ DE PE EMAILJS (din secțiunea Account -> Public Key)
+          emailjs.init("iBr7pIRqNh4Oa64Ag"); 
+       })();
+    </script>
+
     <style>
         :root {
-            --primary: #e67e22; /* Portocaliu industrial */
-            --dark: #111215; /* Gri-negru metalizat închis */
-            --silver-bright: #f0f2f5; /* Argintiu pur lucios */
-            --silver-metal: #adb5bd; /* Argintiu finisat */
+            --primary: #e67e22; 
+            --dark: #111215; 
+            --silver-bright: #f0f2f5; 
+            --silver-metal: #adb5bd; 
             --card-bg: #1a1c20;      
             --text-muted: #868e96;
             --sidebar-width: 260px;
@@ -23,7 +33,6 @@
         
         body { 
             font-family: 'Open Sans', sans-serif; 
-            /* FUNDAL METALIC CU PIULIȚE GENERAT PRIN CSS/SVG */
             background-color: var(--dark);
             background-image: 
                 url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 10 L70 27.5 L70 52.5 L40 70 L10 52.5 L10 27.5 Z' fill='none' stroke='%2322252a' stroke-width='2'/%3E%3Ccircle cx='40' cy='40' r='12' fill='none' stroke='%2322252a' stroke-width='2'/%3E%3C/svg%3E"),
@@ -35,13 +44,11 @@
 
         h1, h2, h3 { font-family: 'Orbitron', sans-serif; text-transform: uppercase; letter-spacing: 2px; }
 
-        /* --- SISTEM LIMBĂ --- */
         .en { display: none !important; }
         body.lang-en .ro { display: none !important; }
         body.lang-en .en { display: block !important; }
         body.lang-en span.en { display: inline !important; }
 
-        /* ECRANUL DE BLOCARE (GATEKEEPER) */
         #ecran-blocare {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -59,28 +66,24 @@
         }
         .login-box img.logo-login { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--primary); margin-bottom: 20px;}
 
-        /* BUTON PIULIȚĂ (SETĂRI) */
         #btn-setari {
             position: fixed;
             top: 20px; right: 25px;
             width: 55px; height: 55px;
             background: var(--silver-metal);
-            /* Forma de piuliță hexagonală */
             clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-            display: none; /* Ascuns inițial */
+            display: none; 
             justify-content: center; align-items: center;
             cursor: pointer; z-index: 2000;
             transition: 0.3s;
         }
         #btn-setari:hover { background: var(--primary); transform: rotate(30deg); }
-        /* Gaura din mijlocul piuliței */
         #btn-setari::after {
             content: ''; width: 25px; height: 25px;
             background: var(--dark);
             border-radius: 50%;
         }
 
-        /* PANOU SETĂRI DROPDOWN */
         #panou-setari {
             position: fixed; top: 85px; right: 25px;
             background: var(--card-bg);
@@ -100,10 +103,8 @@
         .logout-btn { background: transparent; border: 1px solid #e74c3c; color: #e74c3c; padding: 10px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.3s; width: 100%; text-align: center;}
         .logout-btn:hover { background: #e74c3c; color: white; }
 
-        /* CONTAINER SITE (Afișat doar după logare) */
         #continut-site { display: none; width: 100%; min-height: 100vh; }
 
-        /* MENIU LATERAL (STÂNGA) */
         nav { 
             position: fixed; top: 0; left: 0; 
             width: var(--sidebar-width); height: 100vh; 
@@ -127,17 +128,14 @@
         }
         nav ul li a:hover, nav ul li a.active { color: var(--primary); background: rgba(230, 126, 34, 0.08); border-left-color: var(--primary); }
 
-        /* CONȚINUTUL DIN DREAPTA */
         .main-content {
             margin-left: var(--sidebar-width); width: calc(100% - var(--sidebar-width));
             min-height: 100vh; display: flex; flex-direction: column;
         }
 
-        /* STRUCTURĂ RUBRICI SEPARATE */
         .rubrica { display: none; padding: 60px 5%; flex: 1; width: 100%; animation: fadeIn 0.4s ease-in-out; }
         .rubrica.active { display: block; }
 
-        /* STIL PENTRU BUTONUL GOOGLE */
         .google-btn {
             width: 100%; background: #fff; color: #222; border: none; padding: 15px;
             font-weight: bold; cursor: pointer; border-radius: 4px; font-size: 1rem;
@@ -146,7 +144,6 @@
         }
         .google-btn:hover { background: #f1f1f1; transform: translateY(-2px); }
 
-        /* Diverse stiluri de la vechiul cod păstrate (Formulare, carduri) */
         .hero-content { min-height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
         .hero-content h1 { font-size: 4rem; font-weight: 900; color: var(--silver-bright); margin-bottom: 20px; text-shadow: 3px 3px 15px rgba(0,0,0,0.9); }
         .hero-content h1 span { color: var(--primary); }
@@ -169,9 +166,6 @@
         .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--silver-metal); }
         .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px; background: #121316; border: 1px solid #3a3f4a; color: #fff; border-radius: 4px; font-size: 1rem; }
         .submit-btn { width: 100%; background: var(--primary); color: #fff; border: none; padding: 15px; font-weight: bold; cursor: pointer; border-radius: 4px; font-size: 1.1rem; text-transform: uppercase; font-family: 'Orbitron', sans-serif; }
-
-        .admin-form-card { background: #202227; border: 1px solid #3a3f4a; border-radius: 6px; padding: 20px; margin-bottom: 20px; text-align: left; }
-        .admin-actions { display: flex; gap: 15px; margin-top: 15px; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -205,8 +199,7 @@
     <div id="btn-setari" onclick="window.toggleSetari()" title="Setări Cont"></div>
     
     <div id="panou-setari">
-        <div class="user-info-text" id="setari-user-info">
-            </div>
+        <div class="user-info-text" id="setari-user-info"></div>
         
         <div>
             <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 5px; text-align: center;">Schimbă Limba / Language</p>
@@ -234,13 +227,6 @@
                 <li><a onclick="window.arataRubrica('galerie')" id="lnk-galerie"><i class="fa-solid fa-images"></i> <span class="ro">Galerie</span><span class="en">Gallery</span></a></li>
                 <li><a onclick="window.arataRubrica('comanda')" id="lnk-comanda"><i class="fa-solid fa-file-invoice-dollar"></i> <span class="ro">Comandă</span><span class="en">Order</span></a></li>
                 <li><a onclick="window.arataRubrica('contact')" id="lnk-contact"><i class="fa-solid fa-phone"></i> <span class="ro">Contact</span><span class="en">Contact</span></a></li>
-                
-                <li id="nav-admin" style="display: none; margin-top: 20px;">
-                    <a onclick="window.arataRubrica('admin-panel')" id="lnk-admin-panel" style="border-left: 3px solid #f1c40f;">
-                        <i class="fa-solid fa-user-shield" style="color: #f1c40f;"></i> 
-                        <span class="ro" style="color: #f1c40f;">Panou Admin</span><span class="en" style="color: #f1c40f;">Admin Panel</span>
-                    </a>
-                </li>
             </ul>
         </nav>
 
@@ -356,29 +342,6 @@
                 </div>
             </div>
 
-            <div id="admin-panel" class="rubrica">
-                <div id="admin-login-view" class="form-box">
-                    <h2 style="color: #f1c40f; text-align: center; margin-bottom: 20px;"><i class="fa-solid fa-lock"></i> Autentificare Admin</h2>
-                    <div class="form-group">
-                        <label>E-mail Admin</label>
-                        <input type="email" id="admin-email-input" placeholder="stefanstanica0@gmail.com" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Parolă Admin</label>
-                        <input type="password" id="admin-pass-input" placeholder="Introdu parola" required>
-                    </div>
-                    <button id="btn-login-admin" class="submit-btn" style="background: #f1c40f; color: #000;">Intră în Panou</button>
-                </div>
-
-                <div id="admin-dashboard-view" style="display: none; max-width: 900px; margin: 0 auto;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid #f1c40f; padding-bottom: 10px;">
-                        <h2>Formulare Primite (Cloud)</h2>
-                        <button id="btn-logout-admin" class="lang-btn" style="border-color: #e74c3c; color: #e74c3c;">Ieșire Panou</button>
-                    </div>
-                    <div id="admin-forms-container"></div>
-                </div>
-            </div>
-
             <footer style="padding: 30px 5%; text-align: center; background: rgba(10, 10, 12, 0.9); border-top: 1px solid #222; width: 100%; color: var(--text-muted); margin-top: auto;">
                 <p class="ro">&copy; 2026 MetalMachine. Făurit în România.</p>
                 <p class="en">&copy; 2026 MetalMachine. Crafted in Romania.</p>
@@ -389,7 +352,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, query, orderBy, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyAXMHHuAwefEoVYJZh8eiEFu2l6q-fmLpI",
@@ -405,18 +368,15 @@
         const db = getFirestore(app); 
         const provider = new GoogleAuthProvider();
 
-        // Elemente DOM noi
         const btnGoogle = document.getElementById("btn-google");
         const btnLogout = document.getElementById("btn-logout");
         const mesajAuth = document.getElementById("auth-mesaj");
-        const navAdmin = document.getElementById("nav-admin");
         const ecranBlocare = document.getElementById("ecran-blocare");
         const continutSite = document.getElementById("continut-site");
         const btnSetari = document.getElementById("btn-setari");
         const panouSetari = document.getElementById("panou-setari");
         const setariUserInfo = document.getElementById("setari-user-info");
 
-        // UI Functions
         window.arataRubrica = function(idRubrica) {
             document.querySelectorAll('.rubrica').forEach(r => r.classList.remove('active'));
             document.querySelectorAll('nav ul li a').forEach(l => l.classList.remove('active'));
@@ -424,7 +384,7 @@
             let linkActiv = document.getElementById('lnk-' + idRubrica);
             if(linkActiv) linkActiv.classList.add('active');
             window.scrollTo(0, 0);
-            panouSetari.style.display = 'none'; // Ascundem setarile cand naviga
+            panouSetari.style.display = 'none'; 
         }
 
         window.schimbaLimba = function(lang) {
@@ -443,7 +403,6 @@
             }
         }
 
-        // Logică Autentificare Google
         btnGoogle.addEventListener("click", () => {
             signInWithPopup(auth, provider).catch((error) => {
                 mesajAuth.textContent = "Autentificarea a eșuat. Încearcă din nou!";
@@ -456,138 +415,68 @@
             panouSetari.style.display = "none";
         });
 
-        // Verificare Gatekeeper - Blochează sau permite accesul la site
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                // Dacă e logat, ascundem gatekeeper-ul și arătăm site-ul și piulița
                 ecranBlocare.style.display = "none";
                 continutSite.style.display = "flex";
                 btnSetari.style.display = "flex";
-                
-                // Setăm datele în meniul de setări
                 setariUserInfo.innerHTML = `Conectat ca:<br><strong style="color:var(--primary); font-size:1.1rem;">${user.displayName}</strong><br><span style="font-size:0.8rem;">${user.email}</span>`;
-
-                if(user.email === "stefanstanica0@gmail.com") {
-                    navAdmin.style.display = "block";
-                } else {
-                    navAdmin.style.display = "none";
-                }
             } else {
-                // Dacă nu e logat, forțăm gatekeeper-ul
                 ecranBlocare.style.display = "flex";
                 continutSite.style.display = "none";
                 btnSetari.style.display = "none";
                 panouSetari.style.display = "none";
-                navAdmin.style.display = "none";
             }
         });
 
-        // --- SALVAREA FORMULARELOR ÎN FIREBASE CLOUD ---
+        // --- SALVAREA ÎN FIREBASE CLOUD ȘI TRIMITEREA EMAILULUI PRIN EMAILJS ---
         const orderForm = document.getElementById("orderForm");
         orderForm.addEventListener("submit", async function(e) {
             e.preventDefault();
+            
+            const btnSubmit = orderForm.querySelector('.submit-btn');
+            const originalText = btnSubmit.innerText;
+            btnSubmit.innerText = "Se trimite...";
+            btnSubmit.disabled = true;
+
             const nume = document.getElementById("form-nume").value;
             const email = document.getElementById("form-email").value;
             const telefon = document.getElementById("form-telefon").value;
             const detalii = document.getElementById("form-detalii").value;
 
             try {
+                // 1. Salvare în baza de date Firebase
                 await addDoc(collection(db, "formulare"), {
                     nume: nume, email: email, telefon: telefon, detalii: detalii,
                     status: "În așteptare", motiv: "", dataTrimitere: Date.now()
                 });
+
+                // 2. Trimiterea efectivă a emailului către admini folosind primul template (6n838h1)
+                await emailjs.send("service_f853i8d", "template_6n838h1", {
+                    nume: nume,
+                    email: email,
+                    telefon: telefon,
+                    detalii: detalii
+                });
+
+                // 3. (Opțional) Confirmare către client folosind al doilea template (lkvapc9)
+                await emailjs.send("service_f853i8d", "template_lkvapc9", {
+                    nume: nume,
+                    email: email,
+                    telefon: telefon,
+                    detalii: detalii
+                });
+
                 alert("Cererea a fost trimisă cu succes!");
                 orderForm.reset();
                 window.arataRubrica("acasa");
             } catch (error) {
-                alert("Eroare la trimiterea datelor online: " + error.message);
+                alert("A apărut o eroare la trimiterea datelor: " + error.message);
+            } finally {
+                btnSubmit.innerText = originalText;
+                btnSubmit.disabled = false;
             }
         });
-
-        // --- LOGICA INTERNĂ PANOU ADMIN ---
-        const btnLoginAdmin = document.getElementById("btn-login-admin");
-        const btnLogoutAdmin = document.getElementById("btn-logout-admin");
-        const adminLoginView = document.getElementById("admin-login-view");
-        const adminDashboardView = document.getElementById("admin-dashboard-view");
-        const containerFormulare = document.getElementById("admin-forms-container");
-
-        btnLoginAdmin.addEventListener("click", () => {
-            const email = document.getElementById("admin-email-input").value;
-            const parola = document.getElementById("admin-pass-input").value;
-
-            if (email === "stefanstanica0@gmail.com" && parola === "tafetare123") {
-                adminLoginView.style.display = "none";
-                adminDashboardView.style.display = "block";
-                incarcaFormulareAdmin();
-            } else {
-                alert("Acces respins! Email invalid sau parolă greșită.");
-            }
-        });
-
-        btnLogoutAdmin.addEventListener("click", () => {
-            adminLoginView.style.display = "block";
-            adminDashboardView.style.display = "none";
-            document.getElementById("admin-pass-input").value = ""; 
-        });
-
-        async function incarcaFormulareAdmin() {
-            containerFormulare.innerHTML = "<p style='text-align:center;'>Se încarcă formularele...</p>";
-            try {
-                const q = query(collection(db, "formulare"), orderBy("dataTrimitere", "desc"));
-                const querySnapshot = await getDocs(q);
-                containerFormulare.innerHTML = "";
-
-                if (querySnapshot.empty) {
-                    containerFormulare.innerHTML = `<p style="text-align: center;">Nu există nicio cerere.</p>`;
-                    return;
-                }
-
-                querySnapshot.forEach((docObject) => {
-                    const form = docObject.data();
-                    const docId = docObject.id; 
-                    let culoareStatus = "#e67e22";
-                    if (form.status === "Acceptat") culoareStatus = "#2ecc71";
-                    if (form.status === "Respins") culoareStatus = "#e74c3c";
-
-                    const card = document.createElement("div");
-                    card.className = "admin-form-card";
-                    card.innerHTML = `
-                        <h3>Client: ${form.nume}</h3>
-                        <p style="margin-top: 5px;"><strong>E-mail:</strong> ${form.email} | <strong>Telefon:</strong> ${form.telefon}</p>
-                        <p style="background: #111215; padding: 10px; border-radius: 4px; margin: 10px 0; border-left: 3px solid var(--primary);">
-                            <strong>Detalii:</strong> ${form.detalii}
-                        </p>
-                        <p><strong>Status:</strong> <span style="color: ${culoareStatus}; font-weight: bold;">${form.status}</span></p>
-                        ${form.motiv ? `<p style="color: #e74c3c; margin-top: 5px;"><strong>Motiv:</strong> ${form.motiv}</p>` : ""}
-                        
-                        <div class="admin-actions">
-                            <button onclick="window.actualizeazaStatus('${docId}', 'Acceptat')" class="lang-btn" style="border-color: #2ecc71; color: #2ecc71;">Acceptă</button>
-                            <button onclick="window.actualizeazaStatus('${docId}', 'Respins')" class="lang-btn" style="border-color: #e74c3c; color: #e74c3c;">Respinge</button>
-                        </div>
-                    `;
-                    containerFormulare.appendChild(card);
-                });
-            } catch (error) {
-                containerFormulare.innerHTML = `<p style='color:#e74c3c; text-align:center;'>Eroare: ${error.message}</p>`;
-            }
-        }
-
-        window.actualizeazaStatus = async function(docId, noulStatus) {
-            let motivRespingere = "";
-            if (noulStatus === "Respins") {
-                motivRespingere = prompt("Introdu motivul respingerii:");
-                if (motivRespingere === null) return; 
-                if (motivRespingere.trim() === "") motivRespingere = "Nespecificat";
-            }
-
-            try {
-                const docRef = doc(db, "formulare", docId);
-                await updateDoc(docRef, { status: noulStatus, motiv: motivRespingere });
-                incarcaFormulareAdmin(); 
-            } catch (error) {
-                alert("Eroare la salvare status: " + error.message);
-            }
-        };
     </script>
 </body>
 </html>
