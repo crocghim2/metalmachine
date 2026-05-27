@@ -10,17 +10,29 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {
-            --primary: #e67e22;       /* Portocaliu industrial */
-            --dark: #111215;         /* Gri-negru metalizat închis */
-            --silver-bright: #f0f2f5;  /* Argintiu pur lucios */
-            --silver-metal: #adb5bd;  /* Argintiu finisat */
+            --primary: #e67e22; /* Portocaliu industrial */
+            --dark: #111215; /* Gri-negru metalizat închis */
+            --silver-bright: #f0f2f5; /* Argintiu pur lucios */
+            --silver-metal: #adb5bd; /* Argintiu finisat */
             --card-bg: #1a1c20;      
-            --text-muted: #868e96;   
-            --sidebar-width: 260px;   /* Lățimea meniului din stânga */
+            --text-muted: #868e96;
+            --sidebar-width: 260px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Open Sans', sans-serif; background-color: var(--dark); color: var(--silver-bright); line-height: 1.6; overflow-x: hidden; display: flex; }
+        
+        body { 
+            font-family: 'Open Sans', sans-serif; 
+            /* FUNDAL METALIC CU PIULIȚE GENERAT PRIN CSS/SVG */
+            background-color: var(--dark);
+            background-image: 
+                url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 10 L70 27.5 L70 52.5 L40 70 L10 52.5 L10 27.5 Z' fill='none' stroke='%2322252a' stroke-width='2'/%3E%3Ccircle cx='40' cy='40' r='12' fill='none' stroke='%2322252a' stroke-width='2'/%3E%3C/svg%3E"),
+                radial-gradient(circle at center, #2b2e36 0%, #111215 100%);
+            color: var(--silver-bright); 
+            line-height: 1.6; 
+            overflow-x: hidden; 
+        }
+
         h1, h2, h3 { font-family: 'Orbitron', sans-serif; text-transform: uppercase; letter-spacing: 2px; }
 
         /* --- SISTEM LIMBĂ --- */
@@ -28,18 +40,76 @@
         body.lang-en .ro { display: none !important; }
         body.lang-en .en { display: block !important; }
         body.lang-en span.en { display: inline !important; }
-        
-        .lang-switch { width: 100%; display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
-        .lang-btn { background: transparent; border: 1px solid var(--silver-metal); color: var(--silver-metal); padding: 5px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+
+        /* ECRANUL DE BLOCARE (GATEKEEPER) */
+        #ecran-blocare {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(17, 18, 21, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 9999;
+            text-align: center;
+        }
+        .login-box {
+            background: var(--card-bg); padding: 40px; border-radius: 8px;
+            border: 2px solid var(--primary);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            max-width: 400px; width: 90%;
+        }
+        .login-box img.logo-login { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--primary); margin-bottom: 20px;}
+
+        /* BUTON PIULIȚĂ (SETĂRI) */
+        #btn-setari {
+            position: fixed;
+            top: 20px; right: 25px;
+            width: 55px; height: 55px;
+            background: var(--silver-metal);
+            /* Forma de piuliță hexagonală */
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            display: none; /* Ascuns inițial */
+            justify-content: center; align-items: center;
+            cursor: pointer; z-index: 2000;
+            transition: 0.3s;
+        }
+        #btn-setari:hover { background: var(--primary); transform: rotate(30deg); }
+        /* Gaura din mijlocul piuliței */
+        #btn-setari::after {
+            content: ''; width: 25px; height: 25px;
+            background: var(--dark);
+            border-radius: 50%;
+        }
+
+        /* PANOU SETĂRI DROPDOWN */
+        #panou-setari {
+            position: fixed; top: 85px; right: 25px;
+            background: var(--card-bg);
+            border: 2px solid var(--silver-metal);
+            border-radius: 6px; padding: 20px;
+            width: 280px; display: none; flex-direction: column; gap: 15px;
+            z-index: 2000; box-shadow: 0 10px 25px rgba(0,0,0,0.8);
+        }
+        .lang-switch { display: flex; justify-content: center; gap: 10px; }
+        .lang-btn {
+            flex: 1; background: transparent; border: 1px solid var(--silver-metal);
+            color: var(--silver-metal); padding: 8px; border-radius: 4px;
+            cursor: pointer; font-weight: bold; transition: 0.3s;
+        }
         .lang-btn.active, .lang-btn:hover { border-color: var(--primary); color: var(--primary); }
+        .user-info-text { text-align: center; font-size: 0.9rem; color: var(--silver-metal); padding-bottom: 15px; border-bottom: 1px solid #333;}
+        .logout-btn { background: transparent; border: 1px solid #e74c3c; color: #e74c3c; padding: 10px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: 0.3s; width: 100%; text-align: center;}
+        .logout-btn:hover { background: #e74c3c; color: white; }
+
+        /* CONTAINER SITE (Afișat doar după logare) */
+        #continut-site { display: none; width: 100%; min-height: 100vh; }
 
         /* MENIU LATERAL (STÂNGA) */
         nav { 
             position: fixed; top: 0; left: 0; 
             width: var(--sidebar-width); height: 100vh; 
-            background: #0d0e10; border-right: 2px solid var(--silver-metal); 
-            display: flex; flex-direction: column; align-items: center; 
-            padding: 40px 20px; z-index: 1000; 
+            background: rgba(13, 14, 16, 0.95); border-right: 2px solid var(--silver-metal); 
+            display: flex; flex-direction: column; align-items: center;
+            padding: 40px 20px; z-index: 1000; backdrop-filter: blur(5px);
         }
         
         .logo-container { text-align: center; margin-bottom: 30px; width: 100%; }
@@ -55,341 +125,267 @@
             transition: 0.3s; cursor: pointer; display: flex; align-items: center; 
             gap: 12px; padding: 12px 15px; border-radius: 4px; border-left: 3px solid transparent;
         }
-        nav ul li a:hover, nav ul li a.active { 
-            color: var(--primary); background: rgba(230, 126, 34, 0.08); border-left-color: var(--primary); 
-        }
+        nav ul li a:hover, nav ul li a.active { color: var(--primary); background: rgba(230, 126, 34, 0.08); border-left-color: var(--primary); }
 
         /* CONȚINUTUL DIN DREAPTA */
         .main-content {
-            margin-left: var(--sidebar-width);
-            width: calc(100% - var(--sidebar-width));
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            margin-left: var(--sidebar-width); width: calc(100% - var(--sidebar-width));
+            min-height: 100vh; display: flex; flex-direction: column;
         }
 
         /* STRUCTURĂ RUBRICI SEPARATE */
-        .rubrica { 
-            display: none; 
-            padding: 60px 5%; 
-            flex: 1;
-            width: 100%;
-            animation: fadeIn 0.4s ease-in-out;
-        }
-        .rubrica.active { 
-            display: block; 
-        }
+        .rubrica { display: none; padding: 60px 5%; flex: 1; width: 100%; animation: fadeIn 0.4s ease-in-out; }
+        .rubrica.active { display: block; }
 
-        /* ACASĂ (HERO) */
+        /* STIL PENTRU BUTONUL GOOGLE */
+        .google-btn {
+            width: 100%; background: #fff; color: #222; border: none; padding: 15px;
+            font-weight: bold; cursor: pointer; border-radius: 4px; font-size: 1rem;
+            display: flex; align-items: center; justify-content: center; gap: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15); transition: 0.3s;
+        }
+        .google-btn:hover { background: #f1f1f1; transform: translateY(-2px); }
+
+        /* Diverse stiluri de la vechiul cod păstrate (Formulare, carduri) */
         .hero-content { min-height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
         .hero-content h1 { font-size: 4rem; font-weight: 900; color: var(--silver-bright); margin-bottom: 20px; text-shadow: 3px 3px 15px rgba(0,0,0,0.9); }
         .hero-content h1 span { color: var(--primary); }
-        .hero-content p { font-size: 1.2rem; color: var(--silver-metal); max-width: 650px; margin-bottom: 35px; }
+        .hero-content p { font-size: 1.2rem; color: var(--silver-metal); max-width: 650px; margin-bottom: 35px; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 5px;}
         .btn-group { display: flex; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; justify-content: center; }
         .btn { background-color: var(--primary); color: #fff; padding: 16px 45px; text-decoration: none; font-weight: bold; border-radius: 4px; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; display: inline-block; }
         .btn:hover { background-color: #d35400; transform: translateY(-3px); }
-        .hero-contact { color: var(--silver-metal); font-size: 1.1rem; }
+        .hero-contact { color: var(--silver-metal); font-size: 1.1rem; background: rgba(0,0,0,0.6); padding: 15px; border-radius: 5px;}
         .hero-contact a { color: var(--primary); text-decoration: none; }
-
-        /* POVESTE, CATEGORII, GALERIE, COMANDĂ */
-        .story-container { display: flex; align-items: center; gap: 50px; flex-wrap: wrap; max-width: 1100px; margin: 40px auto 0 auto; }
-        .story-text { flex: 1; min-width: 300px; }
-        .story-text h2 { margin-bottom: 25px; font-size: 2.3rem; color: var(--primary); }
-        .story-text p { margin-bottom: 20px; font-size: 1.1rem; }
-        .story-img { flex: 1; min-width: 300px; text-align: center; }
-        .story-img img { max-width: 100%; width: 330px; border-radius: 8px; border: 2px solid var(--silver-metal); box-shadow: 0 12px 35px rgba(0,0,0,0.7); }
         .section-title { text-align: center; margin-bottom: 50px; }
-        .section-title h2 { font-size: 2.3rem; }
+        .section-title h2 { font-size: 2.3rem; background: rgba(0,0,0,0.7); display: inline-block; padding: 10px 20px; border-radius: 5px;}
         .section-title h2 span { color: var(--primary); }
+        
         .cat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; max-width: 1100px; margin: 0 auto; }
-        .cat-card { background: var(--card-bg); padding: 40px; border-radius: 6px; text-align: center; border: 1px solid #2b2e36; }
+        .cat-card { background: rgba(26, 28, 32, 0.9); padding: 40px; border-radius: 6px; text-align: center; border: 1px solid #2b2e36; }
         .cat-card i { font-size: 3.5rem; color: var(--primary); margin-bottom: 20px; }
-        .cat-card h3 { margin-bottom: 15px; color: var(--silver-bright); }
-        .cat-card p { font-size: 0.95rem; color: var(--text-muted); }
-        .gallery-container { max-width: 800px; margin: 0 auto; text-align: center; }
-        .img-box { border: 3px solid var(--silver-metal); border-radius: 6px; padding: 12px; background: var(--card-bg); }
-        .img-box img { width: 100%; display: block; border-radius: 3px; }
-        .form-box { max-width: 650px; margin: 0 auto; background: var(--card-bg); padding: 40px; border-radius: 6px; border: 1px solid #2b2e36; }
+        
+        .form-box { max-width: 650px; margin: 0 auto; background: rgba(26, 28, 32, 0.95); padding: 40px; border-radius: 6px; border: 1px solid #2b2e36; }
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--silver-metal); }
         .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px; background: #121316; border: 1px solid #3a3f4a; color: #fff; border-radius: 4px; font-size: 1rem; }
         .submit-btn { width: 100%; background: var(--primary); color: #fff; border: none; padding: 15px; font-weight: bold; cursor: pointer; border-radius: 4px; font-size: 1.1rem; text-transform: uppercase; font-family: 'Orbitron', sans-serif; }
 
-        /* CONTACT PAGE */
-        .contact-page { max-width: 600px; margin: 0 auto; text-align: center; }
-        .contact-card { background: var(--card-bg); padding: 50px; border-radius: 10px; border: 1px solid #2b2e36; }
-        .contact-card a { display: block; margin: 20px 0; font-size: 1.5rem; color: var(--primary); text-decoration: none; font-weight: bold; }
-
-        footer { padding: 30px 5%; text-align: center; background: #0a0a0c; border-top: 1px solid #222; width: 100%; color: var(--text-muted); margin-top: auto; }
-
-        /* STIL PENTRU BUTONUL GOOGLE */
-        .google-btn {
-            width: 100%;
-            background: #fff;
-            color: #222;
-            border: none;
-            padding: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            border-radius: 4px;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            transition: 0.3s;
-        }
-        .google-btn:hover {
-            background: #f1f1f1;
-            transform: translateY(-2px);
-        }
-
-        /* CARDURI ADMIN */
-        .admin-form-card {
-            background: #202227;
-            border: 1px solid #3a3f4a;
-            border-radius: 6px;
-            padding: 20px;
-            margin-bottom: 20px;
-            text-align: left;
-        }
-        .admin-actions {
-            display: flex;
-            gap: 15px;
-            margin-top: 15px;
-        }
+        .admin-form-card { background: #202227; border: 1px solid #3a3f4a; border-radius: 6px; padding: 20px; margin-bottom: 20px; text-align: left; }
+        .admin-actions { display: flex; gap: 15px; margin-top: 15px; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         @media (max-width: 768px) {
-            body { flex-direction: column; }
+            #continut-site { flex-direction: column; }
             nav { position: relative; width: 100%; height: auto; padding: 20px; border-right: none; border-bottom: 2px solid var(--silver-metal); }
             .main-content { margin-left: 0; width: 100%; }
+            #btn-setari { top: 15px; right: 15px; width: 45px; height: 45px; }
+            #btn-setari::after { width: 18px; height: 18px; }
+            #panou-setari { top: 70px; right: 15px; }
         }
     </style>
 </head>
 <body>
 
-    <nav>
-        <div class="lang-switch">
-            <button class="lang-btn active" id="btn-ro" onclick="window.schimbaLimba('ro')">RO</button>
-            <button class="lang-btn" id="btn-en" onclick="window.schimbaLimba('en')">EN</button>
-        </div>
-        
-        <div class="logo-container">
-            <img src="logo.png" alt="Logo" class="nav-logo-img">
-            <div class="logo">METAL<span>MACHINE</span></div>
-        </div>
-        <ul>
-            <li><a onclick="window.arataRubrica('acasa')" id="lnk-acasa" class="active"><i class="fa-solid fa-house"></i> <span class="ro">Acasă</span><span class="en">Home</span></a></li>
-            <li><a onclick="window.arataRubrica('poveste')" id="lnk-poveste"><i class="fa-solid fa-book-open"></i> <span class="ro">Poveste</span><span class="en">Story</span></a></li>
-            <li><a onclick="window.arataRubrica('categorii')" id="lnk-categorii"><i class="fa-solid fa-layer-group"></i> <span class="ro">Categorii</span><span class="en">Categories</span></a></li>
-            <li><a onclick="window.arataRubrica('galerie')" id="lnk-galerie"><i class="fa-solid fa-images"></i> <span class="ro">Galerie</span><span class="en">Gallery</span></a></li>
-            <li><a onclick="window.arataRubrica('comanda')" id="lnk-comanda"><i class="fa-solid fa-file-invoice-dollar"></i> <span class="ro">Comandă</span><span class="en">Order</span></a></li>
-            <li><a onclick="window.arataRubrica('contact')" id="lnk-contact"><i class="fa-solid fa-phone"></i> <span class="ro">Contact</span><span class="en">Contact</span></a></li>
+    <div id="ecran-blocare">
+        <div class="login-box">
+            <img src="logo.png" alt="MetalMachine" class="logo-login" onerror="this.src='https://via.placeholder.com/100/111215/e67e22?text=MM'">
+            <h2 style="margin-bottom: 10px; color: var(--primary); font-family: 'Orbitron', sans-serif;">ACCES RESTRICȚIONAT</h2>
+            <p style="color: var(--silver-metal); margin-bottom: 25px;">Trebuie să te conectezi pentru a vizualiza atelierul MetalMachine.</p>
             
-            <!-- CONT CLIENT GOOGLE -->
-            <li id="nav-login">
-                <a onclick="window.arataRubrica('autentificare')" id="lnk-autentificare">
-                    <i class="fa-solid fa-user"></i> 
-                    <span class="ro">Contul Meu</span><span class="en">My Account</span>
-                </a>
-            </li>
-            <li id="nav-logout" style="display: none;">
-                <a id="btn-logout" style="color: var(--primary);">
-                    <i class="fa-solid fa-sign-out-alt"></i> 
-                    <span class="ro">Ieșire Client</span><span class="en">Logout</span>
-                </a>
-            </li>
-
-            <!-- PANOU ADMIN (ASCUNS COMPLET PRIN DEFAULT) -->
-            <li id="nav-admin" style="display: none;">
-                <a onclick="window.arataRubrica('admin-panel')" id="lnk-admin-panel" style="border-left: 3px solid #f1c40f;">
-                    <i class="fa-solid fa-user-shield" style="color: #f1c40f;"></i> 
-                    <span class="ro" style="color: #f1c40f;">Panou Admin</span><span class="en" style="color: #f1c40f;">Admin Panel</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-
-    <div class="main-content">
-        
-        <div id="acasa" class="rubrica active">
-            <div class="hero-content">
-                <h1 class="ro">FĂURIT DIN <span>FIER</span></h1>
-                <h1 class="en">CRAFTED FROM <span>IRON</span></h1>
-                
-                <p class="ro">Machete unicat de tractoare, mașini și utilaje grele, lucrate integral manual prin sudură brută și modelare în oțel.</p>
-                <p class="en">Unique scale models of tractors, cars, and heavy machinery, entirely handmade through raw welding and steel modeling.</p>
-                
-                <div class="btn-group">
-                    <a onclick="window.arataRubrica('comanda')" class="btn ro">Solicită Lucrare</a>
-                    <a onclick="window.arataRubrica('comanda')" class="btn en">Request Custom Build</a>
-                </div>
-                <div class="hero-contact">
-                    <p class="ro">Sună acum: <strong>0758 690 256</strong></p>
-                    <p class="en">Call now: <strong>0758 690 256</strong></p>
-                    
-                    <p class="ro">Urmărește-ne pe: <a href="https://www.tiktok.com/@daniel_turlea87" target="_blank"><i class="fa-brands fa-tiktok"></i> TikTok</a></p>
-                    <p class="en">Follow us on: <a href="https://www.tiktok.com/@daniel_turlea87" target="_blank"><i class="fa-brands fa-tiktok"></i> TikTok</a></p>
-                </div>
-            </div>
+            <p id="auth-mesaj" style="color: #e74c3c; margin-bottom: 15px; font-weight: bold;"></p>
+            
+            <button id="btn-google" class="google-btn">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" style="width: 20px; height: 20px;">
+                Intră cu Google
+            </button>
         </div>
-
-        <div id="poveste" class="rubrica">
-            <div class="story-container">
-                <div class="story-text">
-                    <h2 class="ro">Povestea Din Spatele Metalului</h2>
-                    <h2 class="en">The Story Behind the Metal</h2>
-                    
-                    <p class="ro">Fiecare machetă care iese din atelierul nostru pornește de la piese brute din fier, foi de tablă groasă și zeci de ore de tăiat, polizat și sudat.</p>
-                    <p class="en">Every model that leaves our workshop starts from raw iron parts, thick steel sheets, and dozens of hours of cutting, grinding, and welding.</p>
-                    
-                    <p class="ro"><strong>MetalMachine (Est. 2026)</strong> reprezintă pasiunea pură transformată în piese grele de colecție.</p>
-                    <p class="en"><strong>MetalMachine (Est. 2026)</strong> represents pure passion transformed into heavy collectible pieces.</p>
-                </div>
-                <div class="story-img"><img src="logo.png" alt="MetalMachine"></div>
-            </div>
-        </div>
-
-        <div id="categorii" class="rubrica">
-            <div class="section-title">
-                <h2 class="ro">Categorii de <span>Utilaje</span></h2>
-                <h2 class="en">Machinery <span>Categories</span></h2>
-            </div>
-            <div class="cat-grid">
-                <div class="cat-card">
-                    <i class="fa-solid fa-tractor"></i>
-                    <h3 class="ro">Tractoare</h3>
-                    <h3 class="en">Tractors</h3>
-                    
-                    <p class="ro">Modele detaliate ale utilajelor agricole iconice, recreate cu o atenție sporită la formele brute și robustețea originalului.</p>
-                    <p class="en">Detailed models of iconic agricultural machinery, recreated with special attention to the raw shapes and robustness of the original.</p>
-                </div>
-                <div class="cat-card">
-                    <i class="fa-solid fa-car"></i>
-                    <h3 class="ro">Mașini</h3>
-                    <h3 class="en">Cars</h3>
-                    
-                    <p class="ro">Autoturisme clasice sau moderne, stilizate prin tehnici de sudură industrială pentru un aspect vizual unic și masiv.</p>
-                    <p class="en">Classic or modern cars, stylized through industrial welding techniques for a unique and massive visual appearance.</p>
-                </div>
-                <div class="cat-card">
-                    <i class="fa-solid fa-truck-monster"></i>
-                    <h3 class="ro">Utilaje Grele</h3>
-                    <h3 class="en">Heavy Machinery</h3>
-                    
-                    <p class="ro">Excavatoare, buldozere și alte utilaje de șantier, transpuse la scară prin îmbinarea creativă a metalului dur.</p>
-                    <p class="en">Excavators, bulldozers, and other construction equipment, scaled down through the creative combination of hard metal.</p>
-                </div>
-            </div>
-        </div>
-
-        <div id="galerie" class="rubrica">
-            <div class="gallery-container">
-                <h2 class="ro">Mândria Atelierului: <span>Tractorul cu Lamă</span></h2>
-                <h2 class="en">Workshop's Pride: <span>Bulldozer Tractor</span></h2>
-                <div class="img-box"><img src="tractor.png" alt="Tractor Metal"></div>
-            </div>
-        </div>
-
-        <!-- RUBRICA COMANDĂ -->
-        <div id="comanda" class="rubrica">
-            <div class="form-box">
-                <h2 class="ro">Solicită Model</h2>
-                <h2 class="en">Request a Model</h2>
-                <form id="orderForm">
-                    <div class="form-group">
-                        <label class="ro">Nume</label><label class="en">Name</label>
-                        <input type="text" id="form-nume" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="ro">E-mail</label><label class="en">E-mail</label>
-                        <input type="email" id="form-email" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="ro">Telefon</label><label class="en">Phone</label>
-                        <input type="tel" id="form-telefon" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="ro">Detalii Utilaj Solicitat</label><label class="en">Requested Machine Details</label>
-                        <textarea id="form-detalii" rows="4" required></textarea>
-                    </div>
-                    <button type="submit" class="submit-btn ro">Trimite Cererea</button>
-                    <button type="submit" class="submit-btn en">Send Request</button>
-                </form>
-            </div>
-        </div>
-
-        <div id="contact" class="rubrica">
-            <div class="contact-page">
-                <h2 class="ro">Contactează-ne</h2>
-                <h2 class="en">Contact Us</h2>
-                <div class="contact-card">
-                    <p class="ro">Pentru orice întrebare sau comandă personalizată:</p>
-                    <p class="en">For any questions or custom orders:</p>
-                    
-                    <a href="tel:0758690256"><i class="fa-solid fa-phone"></i> 0758 690 256</a>
-                    
-                    <a class="ro" href="https://www.tiktok.com/@daniel_turlea87" target="_blank"><i class="fa-brands fa-tiktok"></i> Vezi lucrările pe TikTok</a>
-                    <a class="en" href="https://www.tiktok.com/@daniel_turlea87" target="_blank"><i class="fa-brands fa-tiktok"></i> See our work on TikTok</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- SECTIUNE CLIENT GOOGLE -->
-        <div id="autentificare" class="rubrica">
-            <div class="form-box" style="text-align: center;">
-                <h2 class="ro" style="margin-bottom: 20px;">Intră în Cont</h2>
-                <h2 class="en" style="margin-bottom: 20px;">Account Login</h2>
-                
-                <p id="auth-mesaj" style="color: var(--primary); margin-bottom: 20px; font-weight: bold;"></p>
-                <p id="user-info" style="margin-bottom: 20px; font-size: 1.1rem; display: none;"></p>
-
-                <button id="btn-google" class="google-btn">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" style="width: 20px; height: 20px;">
-                    <span class="ro">Continuă cu Google</span><span class="en">Continue with Google</span>
-                </button>
-            </div>
-        </div>
-
-        <!-- RUBRICĂ: PANOU ADMINISTRARE -->
-        <div id="admin-panel" class="rubrica">
-            <!-- 1. Formularul de logare Admin -->
-            <div id="admin-login-view" class="form-box">
-                <h2 style="color: #f1c40f; text-align: center; margin-bottom: 20px;"><i class="fa-solid fa-lock"></i> Autentificare Admin</h2>
-                <div class="form-group">
-                    <label>E-mail Admin</label>
-                    <input type="email" id="admin-email-input" placeholder="stefanstanica0@gmail.com" required>
-                </div>
-                <div class="form-group">
-                    <label>Parolă Admin</label>
-                    <input type="password" id="admin-pass-input" placeholder="Introdu parola" required>
-                </div>
-                <button id="btn-login-admin" class="submit-btn" style="background: #f1c40f; color: #000;">Intră în Panou</button>
-            </div>
-
-            <!-- 2. Vizualizarea formularelor primite (Ascunsă inițial) -->
-            <div id="admin-dashboard-view" style="display: none; max-width: 900px; margin: 0 auto;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid #f1c40f; padding-bottom: 10px;">
-                    <h2>Formulare Primite (Cloud)</h2>
-                    <button id="btn-logout-admin" class="lang-btn" style="border-color: #e74c3c; color: #e74c3c;">Ieșire Panou</button>
-                </div>
-
-                <div id="admin-forms-container">
-                    <!-- Aici se vor genera automat formularele din Firebase -->
-                </div>
-            </div>
-        </div>
-
-        <footer>
-            <p class="ro">&copy; 2026 MetalMachine. Făurit în România.</p>
-            <p class="en">&copy; 2026 MetalMachine. Crafted in Romania.</p>
-        </footer>
     </div>
 
-    <!-- SCRIPT DE INTERFAȚĂ ȘI FIREBASE COMPLET -->
+    <div id="btn-setari" onclick="window.toggleSetari()" title="Setări Cont"></div>
+    
+    <div id="panou-setari">
+        <div class="user-info-text" id="setari-user-info">
+            </div>
+        
+        <div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 5px; text-align: center;">Schimbă Limba / Language</p>
+            <div class="lang-switch">
+                <button class="lang-btn active" id="btn-ro" onclick="window.schimbaLimba('ro')">RO</button>
+                <button class="lang-btn" id="btn-en" onclick="window.schimbaLimba('en')">EN</button>
+            </div>
+        </div>
+        
+        <button id="btn-logout" class="logout-btn">
+            <i class="fa-solid fa-sign-out-alt"></i> <span class="ro">Deconectare</span><span class="en">Logout</span>
+        </button>
+    </div>
+
+    <div id="continut-site">
+        <nav>
+            <div class="logo-container">
+                <img src="logo.png" alt="Logo" class="nav-logo-img" onerror="this.src='https://via.placeholder.com/80/111215/e67e22?text=MM'">
+                <div class="logo">METAL<span>MACHINE</span></div>
+            </div>
+            <ul>
+                <li><a onclick="window.arataRubrica('acasa')" id="lnk-acasa" class="active"><i class="fa-solid fa-house"></i> <span class="ro">Acasă</span><span class="en">Home</span></a></li>
+                <li><a onclick="window.arataRubrica('poveste')" id="lnk-poveste"><i class="fa-solid fa-book-open"></i> <span class="ro">Poveste</span><span class="en">Story</span></a></li>
+                <li><a onclick="window.arataRubrica('categorii')" id="lnk-categorii"><i class="fa-solid fa-layer-group"></i> <span class="ro">Categorii</span><span class="en">Categories</span></a></li>
+                <li><a onclick="window.arataRubrica('galerie')" id="lnk-galerie"><i class="fa-solid fa-images"></i> <span class="ro">Galerie</span><span class="en">Gallery</span></a></li>
+                <li><a onclick="window.arataRubrica('comanda')" id="lnk-comanda"><i class="fa-solid fa-file-invoice-dollar"></i> <span class="ro">Comandă</span><span class="en">Order</span></a></li>
+                <li><a onclick="window.arataRubrica('contact')" id="lnk-contact"><i class="fa-solid fa-phone"></i> <span class="ro">Contact</span><span class="en">Contact</span></a></li>
+                
+                <li id="nav-admin" style="display: none; margin-top: 20px;">
+                    <a onclick="window.arataRubrica('admin-panel')" id="lnk-admin-panel" style="border-left: 3px solid #f1c40f;">
+                        <i class="fa-solid fa-user-shield" style="color: #f1c40f;"></i> 
+                        <span class="ro" style="color: #f1c40f;">Panou Admin</span><span class="en" style="color: #f1c40f;">Admin Panel</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="main-content">
+            
+            <div id="acasa" class="rubrica active">
+                <div class="hero-content">
+                    <h1 class="ro">FĂURIT DIN <span>FIER</span></h1>
+                    <h1 class="en">CRAFTED FROM <span>IRON</span></h1>
+                    
+                    <p class="ro">Machete unicat de tractoare, mașini și utilaje grele, lucrate integral manual prin sudură brută și modelare în oțel.</p>
+                    <p class="en">Unique scale models of tractors, cars, and heavy machinery, entirely handmade through raw welding and steel modeling.</p>
+                    
+                    <div class="btn-group">
+                        <a onclick="window.arataRubrica('comanda')" class="btn ro">Solicită Lucrare</a>
+                        <a onclick="window.arataRubrica('comanda')" class="btn en">Request Custom Build</a>
+                    </div>
+                    <div class="hero-contact">
+                        <p class="ro">Sună acum: <strong>0758 690 256</strong></p>
+                        <p class="en">Call now: <strong>0758 690 256</strong></p>
+                        <p class="ro">Urmărește-ne pe: <a href="https://www.tiktok.com/@daniel_turlea87" target="_blank"><i class="fa-brands fa-tiktok"></i> TikTok</a></p>
+                        <p class="en">Follow us on: <a href="https://www.tiktok.com/@daniel_turlea87" target="_blank"><i class="fa-brands fa-tiktok"></i> TikTok</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="poveste" class="rubrica">
+                <div style="max-width: 1100px; margin: 0 auto; background: var(--card-bg); padding: 40px; border-radius: 6px; border: 1px solid var(--silver-metal);">
+                    <h2 class="ro" style="color: var(--primary); margin-bottom:20px;">Povestea Din Spatele Metalului</h2>
+                    <h2 class="en" style="color: var(--primary); margin-bottom:20px;">The Story Behind the Metal</h2>
+                    <p class="ro">Fiecare machetă care iese din atelierul nostru pornește de la piese brute din fier, foi de tablă groasă și zeci de ore de tăiat, polizat și sudat.</p>
+                    <p class="en">Every model that leaves our workshop starts from raw iron parts, thick steel sheets, and dozens of hours of cutting, grinding, and welding.</p>
+                    <p class="ro" style="margin-top:20px;"><strong>MetalMachine (Est. 2026)</strong> reprezintă pasiunea pură transformată în piese grele de colecție.</p>
+                    <p class="en" style="margin-top:20px;"><strong>MetalMachine (Est. 2026)</strong> represents pure passion transformed into heavy collectible pieces.</p>
+                </div>
+            </div>
+
+            <div id="categorii" class="rubrica">
+                <div class="section-title">
+                    <h2 class="ro">Categorii de <span>Utilaje</span></h2>
+                    <h2 class="en">Machinery <span>Categories</span></h2>
+                </div>
+                <div class="cat-grid">
+                    <div class="cat-card">
+                        <i class="fa-solid fa-tractor"></i>
+                        <h3 class="ro">Tractoare</h3><h3 class="en">Tractors</h3>
+                        <p class="ro">Modele detaliate ale utilajelor agricole iconice, recreate cu o atenție sporită la formele brute.</p>
+                        <p class="en">Detailed models of iconic agricultural machinery, recreated with special attention to raw shapes.</p>
+                    </div>
+                    <div class="cat-card">
+                        <i class="fa-solid fa-car"></i>
+                        <h3 class="ro">Mașini</h3><h3 class="en">Cars</h3>
+                        <p class="ro">Autoturisme clasice sau moderne, stilizate prin tehnici de sudură industrială pentru un aspect vizual masiv.</p>
+                        <p class="en">Classic or modern cars, stylized through industrial welding techniques for a massive visual appearance.</p>
+                    </div>
+                    <div class="cat-card">
+                        <i class="fa-solid fa-truck-monster"></i>
+                        <h3 class="ro">Utilaje Grele</h3><h3 class="en">Heavy Machinery</h3>
+                        <p class="ro">Excavatoare, buldozere și alte utilaje de șantier transpuse la scară.</p>
+                        <p class="en">Excavators, bulldozers, and other construction equipment scaled down.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="galerie" class="rubrica">
+                <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+                    <h2 class="ro" style="margin-bottom: 30px;">Mândria Atelierului: <span style="color:var(--primary);">Tractorul cu Lamă</span></h2>
+                    <h2 class="en" style="margin-bottom: 30px;">Workshop's Pride: <span style="color:var(--primary);">Bulldozer Tractor</span></h2>
+                    <div style="border: 3px solid var(--silver-metal); border-radius: 6px; padding: 12px; background: var(--card-bg);">
+                        <img src="tractor.png" alt="Tractor Metal" style="width: 100%; border-radius: 3px;" onerror="this.style.display='none'">
+                    </div>
+                </div>
+            </div>
+
+            <div id="comanda" class="rubrica">
+                <div class="form-box">
+                    <h2 class="ro" style="margin-bottom:20px;">Solicită Model</h2>
+                    <h2 class="en" style="margin-bottom:20px;">Request a Model</h2>
+                    <form id="orderForm">
+                        <div class="form-group">
+                            <label class="ro">Nume</label><label class="en">Name</label>
+                            <input type="text" id="form-nume" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="ro">E-mail</label><label class="en">E-mail</label>
+                            <input type="email" id="form-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="ro">Telefon</label><label class="en">Phone</label>
+                            <input type="tel" id="form-telefon" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="ro">Detalii Utilaj Solicitat</label><label class="en">Requested Machine Details</label>
+                            <textarea id="form-detalii" rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn ro">Trimite Cererea</button>
+                        <button type="submit" class="submit-btn en">Send Request</button>
+                    </form>
+                </div>
+            </div>
+
+            <div id="contact" class="rubrica">
+                <div style="max-width: 600px; margin: 0 auto; text-align: center;">
+                    <h2 class="ro" style="margin-bottom:20px;">Contactează-ne</h2>
+                    <h2 class="en" style="margin-bottom:20px;">Contact Us</h2>
+                    <div style="background: var(--card-bg); padding: 50px; border-radius: 10px; border: 1px solid #2b2e36;">
+                        <p class="ro">Pentru orice întrebare sau comandă personalizată:</p>
+                        <p class="en">For any questions or custom orders:</p>
+                        <a href="tel:0758690256" style="display:block; margin:20px 0; font-size:1.5rem; color:var(--primary); text-decoration:none; font-weight:bold;"><i class="fa-solid fa-phone"></i> 0758 690 256</a>
+                        <a class="ro" href="https://www.tiktok.com/@daniel_turlea87" target="_blank" style="color:var(--silver-bright);"><i class="fa-brands fa-tiktok"></i> Vezi lucrările pe TikTok</a>
+                        <a class="en" href="https://www.tiktok.com/@daniel_turlea87" target="_blank" style="color:var(--silver-bright);"><i class="fa-brands fa-tiktok"></i> See our work on TikTok</a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="admin-panel" class="rubrica">
+                <div id="admin-login-view" class="form-box">
+                    <h2 style="color: #f1c40f; text-align: center; margin-bottom: 20px;"><i class="fa-solid fa-lock"></i> Autentificare Admin</h2>
+                    <div class="form-group">
+                        <label>E-mail Admin</label>
+                        <input type="email" id="admin-email-input" placeholder="stefanstanica0@gmail.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Parolă Admin</label>
+                        <input type="password" id="admin-pass-input" placeholder="Introdu parola" required>
+                    </div>
+                    <button id="btn-login-admin" class="submit-btn" style="background: #f1c40f; color: #000;">Intră în Panou</button>
+                </div>
+
+                <div id="admin-dashboard-view" style="display: none; max-width: 900px; margin: 0 auto;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid #f1c40f; padding-bottom: 10px;">
+                        <h2>Formulare Primite (Cloud)</h2>
+                        <button id="btn-logout-admin" class="lang-btn" style="border-color: #e74c3c; color: #e74c3c;">Ieșire Panou</button>
+                    </div>
+                    <div id="admin-forms-container"></div>
+                </div>
+            </div>
+
+            <footer style="padding: 30px 5%; text-align: center; background: rgba(10, 10, 12, 0.9); border-top: 1px solid #222; width: 100%; color: var(--text-muted); margin-top: auto;">
+                <p class="ro">&copy; 2026 MetalMachine. Făurit în România.</p>
+                <p class="en">&copy; 2026 MetalMachine. Crafted in Romania.</p>
+            </footer>
+        </div>
+    </div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
@@ -404,22 +400,23 @@
             appId: "1:1025361495548:web:4df635aec57ad392a99e79",
             measurementId: "G-CXCV6JP307"
         };
-
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app); 
         const provider = new GoogleAuthProvider();
 
-        // Elemente DOM
+        // Elemente DOM noi
         const btnGoogle = document.getElementById("btn-google");
         const btnLogout = document.getElementById("btn-logout");
         const mesajAuth = document.getElementById("auth-mesaj");
-        const userInfo = document.getElementById("user-info");
-        const navLogin = document.getElementById("nav-login");
-        const navLogout = document.getElementById("nav-logout");
         const navAdmin = document.getElementById("nav-admin");
+        const ecranBlocare = document.getElementById("ecran-blocare");
+        const continutSite = document.getElementById("continut-site");
+        const btnSetari = document.getElementById("btn-setari");
+        const panouSetari = document.getElementById("panou-setari");
+        const setariUserInfo = document.getElementById("setari-user-info");
 
-        // Funcții Globale atașate la window pentru funcționarea meniului din HTML
+        // UI Functions
         window.arataRubrica = function(idRubrica) {
             document.querySelectorAll('.rubrica').forEach(r => r.classList.remove('active'));
             document.querySelectorAll('nav ul li a').forEach(l => l.classList.remove('active'));
@@ -427,98 +424,85 @@
             let linkActiv = document.getElementById('lnk-' + idRubrica);
             if(linkActiv) linkActiv.classList.add('active');
             window.scrollTo(0, 0);
+            panouSetari.style.display = 'none'; // Ascundem setarile cand naviga
         }
 
         window.schimbaLimba = function(lang) {
-            if (lang === 'en') {
-                document.body.classList.add('lang-en');
-            } else {
-                document.body.classList.remove('lang-en');
-            }
+            if (lang === 'en') { document.body.classList.add('lang-en'); } 
+            else { document.body.classList.remove('lang-en'); }
             document.getElementById('btn-ro').classList.remove('active');
             document.getElementById('btn-en').classList.remove('active');
             document.getElementById('btn-' + lang).classList.add('active');
         }
 
-        function afiseazaMesaj(mesaj) {
-            mesajAuth.textContent = mesaj;
-            setTimeout(() => { mesajAuth.textContent = ""; }, 4000);
+        window.toggleSetari = function() {
+            if(panouSetari.style.display === "flex") {
+                panouSetari.style.display = "none";
+            } else {
+                panouSetari.style.display = "flex";
+            }
         }
 
-        // Logică Autentificare Google Client / Admin
+        // Logică Autentificare Google
         btnGoogle.addEventListener("click", () => {
-            signInWithPopup(auth, provider)
-                .then((result) => {
-                    const user = result.user;
-                    afiseazaMesaj(document.body.classList.contains("lang-en") ? `Welcome, ${user.displayName}!` : `Salut, ${user.displayName}!`);
-                    setTimeout(() => { window.arataRubrica('acasa'); }, 1500);
-                })
-                .catch((error) => {
-                    afiseazaMesaj("Autentificarea a eșuat!");
-                });
+            signInWithPopup(auth, provider).catch((error) => {
+                mesajAuth.textContent = "Autentificarea a eșuat. Încearcă din nou!";
+                setTimeout(() => { mesajAuth.textContent = ""; }, 4000);
+            });
         });
 
         btnLogout.addEventListener("click", () => {
-            signOut(auth).then(() => { window.arataRubrica('acasa'); });
+            signOut(auth);
+            panouSetari.style.display = "none";
         });
 
-        // Verifică starea autentificării în timp real
+        // Verificare Gatekeeper - Blochează sau permite accesul la site
         onAuthStateChanged(auth, (user) => {
             if (user) {
-                navLogin.style.display = "none";
-                navLogout.style.display = "block";
-                userInfo.style.display = "block";
-                userInfo.innerHTML = `Ești conectat ca: <br><strong>${user.displayName}</strong> (${user.email})`;
-                btnGoogle.style.display = "none";
+                // Dacă e logat, ascundem gatekeeper-ul și arătăm site-ul și piulița
+                ecranBlocare.style.display = "none";
+                continutSite.style.display = "flex";
+                btnSetari.style.display = "flex";
+                
+                // Setăm datele în meniul de setări
+                setariUserInfo.innerHTML = `Conectat ca:<br><strong style="color:var(--primary); font-size:1.1rem;">${user.displayName}</strong><br><span style="font-size:0.8rem;">${user.email}</span>`;
 
-                // --- RESTRICTIE ADMIN RADICALĂ ---
-                // Doar dacă contul Google este cel cerut de tine, afișăm butonul de Panou Admin în meniu!
                 if(user.email === "stefanstanica0@gmail.com") {
                     navAdmin.style.display = "block";
                 } else {
                     navAdmin.style.display = "none";
                 }
             } else {
-                navLogin.style.display = "block";
-                navLogout.style.display = "none";
-                userInfo.style.display = "none";
-                btnGoogle.style.display = "flex";
-                navAdmin.style.display = "none"; // Ascundem panoul dacă nu e nimeni logat
+                // Dacă nu e logat, forțăm gatekeeper-ul
+                ecranBlocare.style.display = "flex";
+                continutSite.style.display = "none";
+                btnSetari.style.display = "none";
+                panouSetari.style.display = "none";
+                navAdmin.style.display = "none";
             }
         });
-
 
         // --- SALVAREA FORMULARELOR ÎN FIREBASE CLOUD ---
         const orderForm = document.getElementById("orderForm");
         orderForm.addEventListener("submit", async function(e) {
             e.preventDefault();
-
             const nume = document.getElementById("form-nume").value;
             const email = document.getElementById("form-email").value;
             const telefon = document.getElementById("form-telefon").value;
             const detalii = document.getElementById("form-detalii").value;
 
             try {
-                // Trimitem obiectul direct în colecția "formulare" din cloud Firebase
                 await addDoc(collection(db, "formulare"), {
-                    nume: nume,
-                    email: email,
-                    telefon: telefon,
-                    detalii: detalii,
-                    status: "În așteptare",
-                    motiv: "",
-                    dataTrimitere: Date.now()
+                    nume: nume, email: email, telefon: telefon, detalii: detalii,
+                    status: "În așteptare", motiv: "", dataTrimitere: Date.now()
                 });
-
-                alert("Cererea ta a fost trimisă cu succes în Cloud! O poți verifica în panoul de admin.");
+                alert("Cererea a fost trimisă cu succes!");
                 orderForm.reset();
                 window.arataRubrica("acasa");
             } catch (error) {
-                console.error("Eroare trimitere cloud: ", error);
                 alert("Eroare la trimiterea datelor online: " + error.message);
             }
         });
-
 
         // --- LOGICA INTERNĂ PANOU ADMIN ---
         const btnLoginAdmin = document.getElementById("btn-login-admin");
@@ -527,7 +511,6 @@
         const adminDashboardView = document.getElementById("admin-dashboard-view");
         const containerFormulare = document.getElementById("admin-forms-container");
 
-        // Autentificare pe baza email-ului de admin cerut și a parolei tafetare123
         btnLoginAdmin.addEventListener("click", () => {
             const email = document.getElementById("admin-email-input").value;
             const parola = document.getElementById("admin-pass-input").value;
@@ -547,25 +530,21 @@
             document.getElementById("admin-pass-input").value = ""; 
         });
 
-        // Funcția care citește datele din Cloud Firebase
         async function incarcaFormulareAdmin() {
-            containerFormulare.innerHTML = "<p style='text-align:center;'>Se încarcă formularele din baza de date...</p>";
-            
+            containerFormulare.innerHTML = "<p style='text-align:center;'>Se încarcă formularele...</p>";
             try {
-                // Interogăm baza de date ordonată după cele mai noi
                 const q = query(collection(db, "formulare"), orderBy("dataTrimitere", "desc"));
                 const querySnapshot = await getDocs(q);
                 containerFormulare.innerHTML = "";
 
                 if (querySnapshot.empty) {
-                    containerFormulare.innerHTML = `<p style="text-align: center; color: var(--text-muted); margin-top: 20px;">Nu există nicio cerere trimisă în baza de date.</p>`;
+                    containerFormulare.innerHTML = `<p style="text-align: center;">Nu există nicio cerere.</p>`;
                     return;
                 }
 
                 querySnapshot.forEach((docObject) => {
                     const form = docObject.data();
-                    const docId = docObject.id; // Luăm ID-ul unic din Firebase
-
+                    const docId = docObject.id; 
                     let culoareStatus = "#e67e22";
                     if (form.status === "Acceptat") culoareStatus = "#2ecc71";
                     if (form.status === "Respins") culoareStatus = "#e74c3c";
@@ -579,7 +558,7 @@
                             <strong>Detalii:</strong> ${form.detalii}
                         </p>
                         <p><strong>Status:</strong> <span style="color: ${culoareStatus}; font-weight: bold;">${form.status}</span></p>
-                        ${form.motiv ? `<p style="color: #e74c3c; margin-top: 5px;"><strong>Motiv Respingere:</strong> ${form.motiv}</p>` : ""}
+                        ${form.motiv ? `<p style="color: #e74c3c; margin-top: 5px;"><strong>Motiv:</strong> ${form.motiv}</p>` : ""}
                         
                         <div class="admin-actions">
                             <button onclick="window.actualizeazaStatus('${docId}', 'Acceptat')" class="lang-btn" style="border-color: #2ecc71; color: #2ecc71;">Acceptă</button>
@@ -589,26 +568,22 @@
                     containerFormulare.appendChild(card);
                 });
             } catch (error) {
-                containerFormulare.innerHTML = `<p style='color:#e74c3c; text-align:center;'>Eroare la citirea datelor: ${error.message}</p>`;
+                containerFormulare.innerHTML = `<p style='color:#e74c3c; text-align:center;'>Eroare: ${error.message}</p>`;
             }
         }
 
-        // Actualizare Status direct în documentul din Cloud Firebase
         window.actualizeazaStatus = async function(docId, noulStatus) {
             let motivRespingere = "";
             if (noulStatus === "Respins") {
-                motivRespingere = prompt("Introdu motivul pentru care respingi această lucrare:");
+                motivRespingere = prompt("Introdu motivul respingerii:");
                 if (motivRespingere === null) return; 
                 if (motivRespingere.trim() === "") motivRespingere = "Nespecificat";
             }
 
             try {
                 const docRef = doc(db, "formulare", docId);
-                await updateDoc(docRef, {
-                    status: noulStatus,
-                    motiv: motivRespingere
-                });
-                incarcaFormulareAdmin(); // Reîncărcăm lista actualizată
+                await updateDoc(docRef, { status: noulStatus, motiv: motivRespingere });
+                incarcaFormulareAdmin(); 
             } catch (error) {
                 alert("Eroare la salvare status: " + error.message);
             }
