@@ -36,10 +36,14 @@
         body { 
             font-family: 'Open Sans', sans-serif; 
             background-color: var(--dark);
+            /* --- Noul Fundal Îmbunătățit --- */
             background-image: 
-                url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 10 L70 27.5 L70 52.5 L40 70 L10 52.5 L10 27.5 Z' fill='none' stroke='%2322252a' stroke-width='1.5'/%3E%3Ccircle cx='40' cy='40' r='12' fill='none' stroke='%2322252a' stroke-width='1.5'/%3E%3C/svg%3E"),
-                radial-gradient(circle at top left, #2b2e36 0%, #0f1013 100%);
+                linear-gradient(rgba(15, 16, 19, 0.85), rgba(15, 16, 19, 0.95)),
+                url("image_0.png"); /* Asigură-te că imaginea e în același folder */
+            background-size: cover;
+            background-position: center;
             background-attachment: fixed;
+            /* ------------------------------- */
             color: var(--silver-bright); 
             line-height: 1.6; 
             overflow-x: hidden; 
