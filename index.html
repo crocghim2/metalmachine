@@ -36,14 +36,12 @@
         body { 
             font-family: 'Open Sans', sans-serif; 
             background-color: var(--dark);
-            /* --- Noul Fundal Îmbunătățit --- */
+            /* --- FUNDAL MODIFICAT: Model cu clești, ciocane, șuruburi, roți dințate --- */
             background-image: 
-                linear-gradient(rgba(15, 16, 19, 0.85), rgba(15, 16, 19, 0.95)),
-                url("image_0.png"); /* Asigură-te că imaginea e în același folder */
-            background-size: cover;
-            background-position: center;
+                url("data:image/svg+xml,%3Csvg width='160' height='160' viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%2322252a' opacity='0.7'%3E%3C!-- Roată dințată (40,40) --%3E%3Cpath d='M40 25 A15 15 0 1 1 40 55 A15 15 0 0 1 40 25 L38 27 L36 29 Z'/%3E%3C!-- Cap de Ciocan (100,40) --%3E%3Crect x='90' y='30' width='25' height='15' rx='3'/%3E%3Crect x='100' y='45' width='5' height='20' rx='2'/%3E%3C!-- Clește/Pilii stilizați (40,110) --%3E%3Cpath d='M30 90 Q40 100 50 90 Q40 110 50 140 M40 110 Q40 100 30 140' stroke='%2322252a' stroke-width='2' fill='none'/%3E%3C!-- Cap de Șurub (100,110) --%3E%3Ccircle cx='100' cy='110' r='10' fill='none' stroke='%2322252a' stroke-width='2'/%3E%3Cline x1='95' y1='105' x2='105' y2='115' stroke='%2322252a' stroke-width='3'/%3E%3Cline x1='105' y1='105' x2='95' y2='115' stroke='%2322252a' stroke-width='3'/%3E%3C/g%3E%3C/svg%3E"),
+                radial-gradient(circle at top left, #2b2e36 0%, #0f1013 100%);
+            /* ---------------------------------------------------------------------- */
             background-attachment: fixed;
-            /* ------------------------------- */
             color: var(--silver-bright); 
             line-height: 1.6; 
             overflow-x: hidden; 
@@ -89,19 +87,40 @@
         }
         .google-btn:hover { background: #f8f9fa; transform: translateY(-3px); box-shadow: 0 6px 20px rgba(255,255,255,0.1); }
 
+        /* --- BUTON SETĂRI MODIFICAT: Forma de Roată Dințată --- */
         #btn-setari {
             position: fixed; top: 25px; right: 30px;
-            width: 50px; height: 50px; background: var(--silver-metal);
-            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            width: 60px; height: 60px; /* Am mărit puțin dimensiunea */
+            background: linear-gradient(135deg, #bdc3c7, #2c3e50); /* Aspect metalic */
+            /*clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);*/
+            border-radius: 50%; /* Baza circulară */
+            border: 2px solid rgba(255,255,255,0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5), inset 0 2px 2px rgba(255,255,255,0.1);
+
             display: none; justify-content: center; align-items: center;
             cursor: pointer; z-index: 2000; transition: all 0.4s ease;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            overflow: hidden; /* Pentru a tăia marginile clip-path în viitor, dacă se adaugă dinți complecși */
         }
-        #btn-setari:hover { background: var(--primary); transform: rotate(60deg) scale(1.1); }
-        #btn-setari::after {
-            content: ''; width: 22px; height: 22px;
-            background: var(--dark); border-radius: 50%;
+
+        /* Iconița din interiorul butonului */
+        #btn-setari i {
+            font-size: 26px;
+            color: var(--dark);
+            transition: 0.3s ease;
         }
+
+        #btn-setari:hover { 
+            background: var(--primary); 
+            transform: rotate(180deg) scale(1.1); /* Se rotește mai mult și mai rapid */
+        }
+
+        #btn-setari:hover i {
+            color: #fff;
+        }
+        
+        /* Am eliminat pseudo-elementul vechi care făcea cerc în mijloc, folosim iconița */
+        #btn-setari::after { display: none; }
+        /* ------------------------------------------------------------------------ */
 
         #panou-setari {
             position: fixed; top: 90px; right: 30px;
@@ -272,7 +291,7 @@
             .form-box { padding: 30px 20px; }
             
             #btn-setari { top: 15px; right: 15px; width: 40px; height: 40px; }
-            #btn-setari::after { width: 18px; height: 18px; }
+            /*#btn-setari::after { width: 18px; height: 18px; }*/
             #panou-setari { top: 65px; right: 15px; width: calc(100vw - 30px); }
         }
     </style>
@@ -294,7 +313,10 @@
         </div>
     </div>
 
-    <div id="btn-setari" onclick="window.toggleSetari()" title="Setări Cont"></div>
+    <!-- FUNDAL MODIFICAT: Adăugată iconița i pentru gear în interior -->
+    <div id="btn-setari" onclick="window.toggleSetari()" title="Setări Cont">
+        <i class="fa-solid fa-gear"></i>
+    </div>
     
     <div id="panou-setari">
         <div class="user-info-text" id="setari-user-info"></div>
